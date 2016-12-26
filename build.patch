@@ -1,0 +1,59 @@
+--- darktable-2.2.0/src/CMakeLists.txt~	2016-12-23 10:38:36.000000000 +0000
++++ darktable-2.2.0/src/CMakeLists.txt	2016-12-26 21:33:20.803587838 +0000
+@@ -226,7 +226,7 @@
+   else(USE_WEBP)
+ endif(USE_WEBP)
+ 
+-foreach(lib ${OUR_LIBS} LensFun GIO GThread GModule PangoCairo PThread Rsvg2 LibXml2 Sqlite3 CURL PNG JPEG TIFF LCMS2 JsonGlib)
++foreach(lib ${OUR_LIBS} LensFun GIO GThread GModule PangoCairo PThread Rsvg2 LibXml2 Sqlite3 CURL PNG JPEG LCMS2 JsonGlib)
+   find_package(${lib} REQUIRED)
+   include_directories(SYSTEM ${${lib}_INCLUDE_DIRS})
+   list(APPEND LIBS ${${lib}_LIBRARIES})
+--- darktable-2.2.0/src/CMakeLists.txt~	2016-12-26 21:33:20.000000000 +0000
++++ darktable-2.2.0/src/CMakeLists.txt	2016-12-26 22:27:49.803846943 +0000
+@@ -38,7 +38,6 @@
+   "common/imageio_module.c"
+   "common/imageio_pfm.c"
+   "common/imageio_rgbe.c"
+-  "common/imageio_tiff.c"
+   "common/imageio_gm.c"
+   "common/imageio_rawspeed.cc"
+   "common/import_session.c"
+--- darktable-2.2.0/src/common/imageio.c~	2016-12-23 10:38:36.000000000 +0000
++++ darktable-2.2.0/src/common/imageio.c	2016-12-26 22:33:42.770598717 +0000
+@@ -459,16 +459,6 @@
+ dt_imageio_retval_t dt_imageio_open_ldr(dt_image_t *img, const char *filename, dt_mipmap_buffer_t *buf)
+ {
+   dt_imageio_retval_t ret;
+-  ret = dt_imageio_open_tiff(img, filename, buf);
+-  if(ret == DT_IMAGEIO_OK || ret == DT_IMAGEIO_CACHE_FULL)
+-  {
+-    img->buf_dsc.filters = 0u;
+-    img->flags &= ~DT_IMAGE_RAW;
+-    img->flags &= ~DT_IMAGE_HDR;
+-    img->flags |= DT_IMAGE_LDR;
+-    img->loader = LOADER_TIFF;
+-    return ret;
+-  }
+ 
+   ret = dt_imageio_open_png(img, filename, buf);
+   if(ret == DT_IMAGEIO_OK || ret == DT_IMAGEIO_CACHE_FULL)
+--- darktable-2.2.0/src/imageio/format/CMakeLists.txt~	2016-12-23 10:38:36.000000000 +0000
++++ darktable-2.2.0/src/imageio/format/CMakeLists.txt	2016-12-26 22:36:21.630680034 +0000
+@@ -6,7 +6,7 @@
+ add_definitions(-include common/module_api.h)
+ add_definitions(-include imageio/format/imageio_format_api.h)
+ 
+-set(MODULES copy jpeg pdf png ppm pfm tiff )
++set(MODULES copy jpeg pdf png ppm pfm )
+ 
+ add_library(copy MODULE "copy.c")
+ add_library(jpeg MODULE "jpeg.c")
+@@ -14,7 +14,6 @@
+ add_library(png MODULE "png.c")
+ add_library(ppm MODULE "ppm.c")
+ add_library(pfm MODULE "pfm.c")
+-add_library(tiff MODULE "tiff.c")
+ 
+ if(WEBP_FOUND)
+         list(APPEND MODULES "webp")

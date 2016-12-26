@@ -1,0 +1,28 @@
+# This file contains additional build requirements that did not get
+# picked up automatically. One name per line, no whitespace.
+llvm-dev
+libxml2-dev
+libxslt-dev
+beignet-dev
+ocl-icd-dev
+llvm
+desktop-file-utils
+intltool
+glib-dev
+gtk3-dev
+libwebp-dev
+lensfun-dev
+libpng-dev
+libjpeg-turbo-dev
+librsvg-dev
+sqlite-autoconf-dev
+libsoup-dev
+curl-dev
+lcms2-dev
+json-glib-dev
+exiv2-dev
+lua-dev
+expat-dev
+pugixml-dev
+colord-dev
+perl(XML::Parser)
