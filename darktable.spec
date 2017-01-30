@@ -4,7 +4,7 @@
 #
 Name     : darktable
 Version  : 2.2.1
-Release  : 5
+Release  : 6
 URL      : https://github.com/darktable-org/darktable/releases/download/release-2.2.1/darktable-2.2.1.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-2.2.1/darktable-2.2.1.tar.xz
 Summary  : A virtual Lighttable and Darkroom
@@ -97,7 +97,7 @@ locales components for the darktable package.
 
 %build
 export LANG=C
-export SOURCE_DATE_EPOCH=1484665608
+export SOURCE_DATE_EPOCH=1485790009
 mkdir clr-build
 pushd clr-build
 export AR=gcc-ar
@@ -107,12 +107,12 @@ export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-sem
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition "
-cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=%{_libdir} -DCMAKE_AR=/usr/bin/gcc-ar -DLIB_SUFFIX=64 -DCMAKE_RANLIB=/usr/bin/gcc-ranlib -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DDONT_USE_INTERNAL_LUA=Off -DBINARY_PACKAGE_BUILD=ON
+cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=%{_libdir} -DCMAKE_AR=/usr/bin/gcc-ar -DLIB_SUFFIX=64 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_RANLIB=/usr/bin/gcc-ranlib -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DDONT_USE_INTERNAL_LUA=Off -DBINARY_PACKAGE_BUILD=ON
 make VERBOSE=1  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1484665608
+export SOURCE_DATE_EPOCH=1485790009
 rm -rf %{buildroot}
 pushd clr-build
 %make_install
