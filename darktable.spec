@@ -4,7 +4,7 @@
 #
 Name     : darktable
 Version  : 2.2.4
-Release  : 9
+Release  : 10
 URL      : https://github.com/darktable-org/darktable/releases/download/release-2.2.4/darktable-2.2.4.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-2.2.4/darktable-2.2.4.tar.xz
 Summary  : A virtual Lighttable and Darkroom
