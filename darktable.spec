@@ -4,7 +4,7 @@
 #
 Name     : darktable
 Version  : 2.2.5
-Release  : 12
+Release  : 13
 URL      : https://github.com/darktable-org/darktable/releases/download/release-2.2.5/darktable-2.2.5.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-2.2.5/darktable-2.2.5.tar.xz
 Summary  : A virtual Lighttable and Darkroom
@@ -28,6 +28,7 @@ BuildRequires : intltool
 BuildRequires : json-glib-dev
 BuildRequires : lcms2-dev
 BuildRequires : lensfun-dev
+BuildRequires : libgphoto2-dev
 BuildRequires : libjpeg-turbo-dev
 BuildRequires : libpng-dev
 BuildRequires : librsvg-dev
@@ -100,7 +101,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1496071545
+export SOURCE_DATE_EPOCH=1498614907
 mkdir clr-build
 pushd clr-build
 export AR=gcc-ar
@@ -110,12 +111,12 @@ export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-sem
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition "
-cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=%{_libdir} -DCMAKE_AR=/usr/bin/gcc-ar -DLIB_SUFFIX=64 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_RANLIB=/usr/bin/gcc-ranlib -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DDONT_USE_INTERNAL_LUA=Off -DBINARY_PACKAGE_BUILD=ON
+cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=/usr/lib64 -DCMAKE_AR=/usr/bin/gcc-ar -DLIB_SUFFIX=64 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_RANLIB=/usr/bin/gcc-ranlib -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DDONT_USE_INTERNAL_LUA=Off -DBINARY_PACKAGE_BUILD=ON
 make VERBOSE=1  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1496071545
+export SOURCE_DATE_EPOCH=1498614907
 rm -rf %{buildroot}
 pushd clr-build
 %make_install
@@ -430,6 +431,7 @@ popd
 /usr/lib64/darktable/plugins/libwatermark.so
 /usr/lib64/darktable/plugins/libzonesystem.so
 /usr/lib64/darktable/plugins/lighttable/libbackgroundjobs.so
+/usr/lib64/darktable/plugins/lighttable/libcamera.so
 /usr/lib64/darktable/plugins/lighttable/libcollect.so
 /usr/lib64/darktable/plugins/lighttable/libcolorlabels.so
 /usr/lib64/darktable/plugins/lighttable/libcolorpicker.so
@@ -446,6 +448,7 @@ popd
 /usr/lib64/darktable/plugins/lighttable/libimage.so
 /usr/lib64/darktable/plugins/lighttable/libimport.so
 /usr/lib64/darktable/plugins/lighttable/liblighttable_mode.so
+/usr/lib64/darktable/plugins/lighttable/liblive_view.so
 /usr/lib64/darktable/plugins/lighttable/libmasks.so
 /usr/lib64/darktable/plugins/lighttable/libmetadata.so
 /usr/lib64/darktable/plugins/lighttable/libmetadata_view.so
@@ -466,6 +469,7 @@ popd
 /usr/lib64/darktable/views/libknight.so
 /usr/lib64/darktable/views/liblighttable.so
 /usr/lib64/darktable/views/libslideshow.so
+/usr/lib64/darktable/views/libtethering.so
 
 %files locales -f darktable.lang
 %defattr(-,root,root,-)

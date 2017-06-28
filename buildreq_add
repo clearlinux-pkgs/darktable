@@ -26,3 +26,4 @@ expat-dev
 pugixml-dev
 colord-dev
 perl(XML::Parser)
+libgphoto2-dev
