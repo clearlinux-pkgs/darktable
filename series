@@ -1,1 +1,3 @@
 build.patch
+default-fpmath.patch
+avx2-libs.patch
