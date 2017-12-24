@@ -1,13 +1,9 @@
 ld-linux-x86-64.so.2
 libX11.so.6
-libXext.so.6
 libXrandr.so.2
-libatk-1.0.so.0
 libc.so.6
-libcairo-gobject.so.2
 libcairo.so.2
 libcolord.so.2
-libcolordprivate.so.2
 libcurl.so.4
 libdl.so.2
 libexiv2.so.14
@@ -21,7 +17,6 @@ libgobject-2.0.so.0
 libgomp.so.1
 libgphoto2.so.6
 libgphoto2_port.so.12
-libgthread-2.0.so.0
 libgtk-3.so.0
 libjpeg.so.62
 libjson-glib-1.0.so.0
@@ -37,6 +32,7 @@ librsvg-2.so.2
 libsoup-2.4.so.1
 libsqlite3.so.0
 libstdc++.so.6
+libtiff.so.5
 libwebp.so.7
 libxml2.so.2
 libz.so.1

@@ -2,11 +2,11 @@
 +++ darktable-2.2.5/src/libs/lib.c	2017-08-04 12:10:33.212763654 +0000
 @@ -508,13 +508,19 @@
  
- static int dt_lib_load_module(dt_lib_module_t *module, const char *libname, const char *plugin_name)
+ static int dt_lib_load_module(void *m, const char *libname, const char *plugin_name)
  {
+   dt_lib_module_t *module = (dt_lib_module_t *)m;
 +  char avx2libname[8192];
 +  sprintf(avx2libname, "%s.avx2", libname);
-   //  char name[1024];
    module->dt = &darktable;
    module->widget = NULL;
    module->expander = NULL;
@@ -48,9 +48,9 @@
 --- darktable-2.2.5/src/develop/imageop.c~	2017-05-28 14:22:21.000000000 +0000
 +++ darktable-2.2.5/src/develop/imageop.c	2017-08-04 12:44:06.366059204 +0000
 @@ -206,10 +206,16 @@
- 
- int dt_iop_load_module_so(dt_iop_module_so_t *module, const char *libname, const char *op)
+ int dt_iop_load_module_so(void *m, const char *libname, const char *op)
  {
+   dt_iop_module_so_t *module = (dt_iop_module_so_t *)m;
 +  char avxname[8192];
 +  sprintf(avxname, "%s.avx2", libname);
    g_strlcpy(module->op, op, 20);
