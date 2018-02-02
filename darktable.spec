@@ -6,7 +6,7 @@
 #
 Name     : darktable
 Version  : 2.4.1
-Release  : 16
+Release  : 17
 URL      : https://github.com/darktable-org/darktable/releases/download/release-2.4.1/darktable-2.4.1.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-2.4.1/darktable-2.4.1.tar.xz
 Source99 : https://github.com/darktable-org/darktable/releases/download/release-2.4.1/darktable-2.4.1.tar.xz.asc
