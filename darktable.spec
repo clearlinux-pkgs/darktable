@@ -6,7 +6,7 @@
 #
 Name     : darktable
 Version  : 2.4.2
-Release  : 18
+Release  : 19
 URL      : https://github.com/darktable-org/darktable/releases/download/release-2.4.2/darktable-2.4.2.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-2.4.2/darktable-2.4.2.tar.xz
 Source99 : https://github.com/darktable-org/darktable/releases/download/release-2.4.2/darktable-2.4.2.tar.xz.asc
@@ -50,6 +50,7 @@ BuildRequires : sqlite-autoconf-dev
 BuildRequires : tiff-dev
 Patch1: default-fpmath.patch
 Patch2: avx2-libs.patch
+Patch3: std-gnu.patch
 
 %description
 darktable is a virtual lighttable and darkroom for photographers: it manages 
@@ -102,6 +103,7 @@ locales components for the darktable package.
 %setup -q -n darktable-2.4.2
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 pushd ..
 cp -a darktable-2.4.2 buildavx2
 popd
@@ -111,7 +113,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1522114091
+export SOURCE_DATE_EPOCH=1523197503
 mkdir clr-build
 pushd clr-build
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -134,7 +136,7 @@ make  %{?_smp_mflags}  || :
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1522114091
+export SOURCE_DATE_EPOCH=1523197503
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/lib64/haswell/avx512_1
 pushd clr-build-avx2

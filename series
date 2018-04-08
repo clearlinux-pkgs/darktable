@@ -1,2 +1,3 @@
 default-fpmath.patch
 avx2-libs.patch
+std-gnu.patch

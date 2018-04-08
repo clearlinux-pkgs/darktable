@@ -1,0 +1,31 @@
+--- darktable-2.4.0/src/CMakeLists.txt~	2017-12-24 09:09:10.000000000 +0000
++++ darktable-2.4.0/src/CMakeLists.txt	2018-04-08 14:19:13.535694067 +0000
+@@ -157,23 +157,23 @@
+ # initial compiler flags
+ add_definitions("-DHAVE_CONFIG_H")
+ 
+-CHECK_C_COMPILER_FLAG("-std=c99" COMPILER_SUPPORTS_C99)
++CHECK_C_COMPILER_FLAG("-std=gnu99" COMPILER_SUPPORTS_C99)
+ if(NOT COMPILER_SUPPORTS_C99)
+         message(FATAL_ERROR "The compiler ${CMAKE_C_COMPILER} has no C99 support. Please use a different C compiler.")
+ endif()
+ 
+-CHECK_C_COMPILER_FLAG("-std=c11" COMPILER_SUPPORTS_C11)
++CHECK_C_COMPILER_FLAG("-std=gnu11" COMPILER_SUPPORTS_C11)
+ if(NOT COMPILER_SUPPORTS_C11)
+   message(FATAL_ERROR "The compiler ${CMAKE_C_COMPILER} has no C11 support. Please use a different C compiler.")
+ endif()
+ 
+-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
++CHECK_CXX_COMPILER_FLAG("-std=gnu++11" COMPILER_SUPPORTS_CXX11)
+ if(NOT COMPILER_SUPPORTS_CXX11)
+         message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+ endif()
+ 
+-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
+-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
++set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
++set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
+ 
+ if(APPLE AND (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
