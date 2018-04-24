@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x8DB9B72F4BFF7EAD (release@darktable.org)
 #
 Name     : darktable
-Version  : 2.4.2
-Release  : 20
-URL      : https://github.com/darktable-org/darktable/releases/download/release-2.4.2/darktable-2.4.2.tar.xz
-Source0  : https://github.com/darktable-org/darktable/releases/download/release-2.4.2/darktable-2.4.2.tar.xz
-Source99 : https://github.com/darktable-org/darktable/releases/download/release-2.4.2/darktable-2.4.2.tar.xz.asc
+Version  : 2.4.3
+Release  : 21
+URL      : https://github.com/darktable-org/darktable/releases/download/release-2.4.3/darktable-2.4.3.tar.xz
+Source0  : https://github.com/darktable-org/darktable/releases/download/release-2.4.3/darktable-2.4.3.tar.xz
+Source99 : https://github.com/darktable-org/darktable/releases/download/release-2.4.3/darktable-2.4.3.tar.xz.asc
 Summary  : A virtual Lighttable and Darkroom
 Group    : Development/Tools
 License  : BSD-2-Clause-FreeBSD GPL-3.0 GPL-3.0+ LGPL-2.1 MIT
@@ -100,12 +100,12 @@ locales components for the darktable package.
 
 
 %prep
-%setup -q -n darktable-2.4.2
+%setup -q -n darktable-2.4.3
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 pushd ..
-cp -a darktable-2.4.2 buildavx2
+cp -a darktable-2.4.3 buildavx2
 popd
 
 %build
@@ -113,7 +113,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1523199685
+export SOURCE_DATE_EPOCH=1524535236
 mkdir clr-build
 pushd clr-build
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -129,14 +129,14 @@ export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-in
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
-export CFLAGS="$CFLAGS -march=haswell"
-export CXXFLAGS="$CXXFLAGS -march=haswell"
+export CFLAGS="$CFLAGS -march=haswell -m64"
+export CXXFLAGS="$CXXFLAGS -march=haswell -m64"
 cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=/usr/lib64/haswell -DCMAKE_INSTALL_LIBDIR=/usr/lib64/haswell -DCMAKE_AR=/usr/bin/gcc-ar -DCMAKE_RANLIB=/usr/bin/gcc-ranlib -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DDONT_USE_INTERNAL_LUA=Off -DBINARY_PACKAGE_BUILD=ON
 make  %{?_smp_mflags}  || :
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1523199685
+export SOURCE_DATE_EPOCH=1524535236
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/lib64/haswell/avx512_1
 pushd clr-build-avx2
