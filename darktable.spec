@@ -6,7 +6,7 @@
 #
 Name     : darktable
 Version  : 2.4.3
-Release  : 22
+Release  : 23
 URL      : https://github.com/darktable-org/darktable/releases/download/release-2.4.3/darktable-2.4.3.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-2.4.3/darktable-2.4.3.tar.xz
 Source99 : https://github.com/darktable-org/darktable/releases/download/release-2.4.3/darktable-2.4.3.tar.xz.asc
@@ -113,7 +113,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1524535236
+export SOURCE_DATE_EPOCH=1526059160
 mkdir clr-build
 pushd clr-build
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -136,7 +136,7 @@ make  %{?_smp_mflags}  || :
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1524535236
+export SOURCE_DATE_EPOCH=1526059160
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/lib64/haswell/avx512_1
 pushd clr-build-avx2
@@ -396,6 +396,7 @@ mv %{buildroot}/usr/lib64/haswell/darktable/views/*.so.avx2 %{buildroot}/usr/lib
 /usr/lib64/darktable/plugins/libbasecurve.so
 /usr/lib64/darktable/plugins/libbasecurve.so.avx2
 /usr/lib64/darktable/plugins/libbilat.so
+/usr/lib64/darktable/plugins/libbilat.so.avx2
 /usr/lib64/darktable/plugins/libbilateral.so
 /usr/lib64/darktable/plugins/libbilateral.so.avx2
 /usr/lib64/darktable/plugins/libbloom.so
@@ -462,7 +463,6 @@ mv %{buildroot}/usr/lib64/haswell/darktable/views/*.so.avx2 %{buildroot}/usr/lib
 /usr/lib64/darktable/plugins/libhighpass.so
 /usr/lib64/darktable/plugins/libhighpass.so.avx2
 /usr/lib64/darktable/plugins/libhotpixels.so
-/usr/lib64/darktable/plugins/libhotpixels.so.avx2
 /usr/lib64/darktable/plugins/libinvert.so
 /usr/lib64/darktable/plugins/libinvert.so.avx2
 /usr/lib64/darktable/plugins/liblens.so
