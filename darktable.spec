@@ -6,7 +6,7 @@
 #
 Name     : darktable
 Version  : 2.4.3
-Release  : 23
+Release  : 24
 URL      : https://github.com/darktable-org/darktable/releases/download/release-2.4.3/darktable-2.4.3.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-2.4.3/darktable-2.4.3.tar.xz
 Source99 : https://github.com/darktable-org/darktable/releases/download/release-2.4.3/darktable-2.4.3.tar.xz.asc
@@ -16,8 +16,9 @@ License  : BSD-2-Clause-FreeBSD GPL-3.0 GPL-3.0+ LGPL-2.1 MIT
 Requires: darktable-bin
 Requires: darktable-lib
 Requires: darktable-data
-Requires: darktable-doc
+Requires: darktable-license
 Requires: darktable-locales
+Requires: darktable-man
 BuildRequires : beignet-dev
 BuildRequires : cmake
 BuildRequires : colord-dev
@@ -61,6 +62,8 @@ lighttable. it also enables you to develop raw images and enhance them.
 Summary: bin components for the darktable package.
 Group: Binaries
 Requires: darktable-data
+Requires: darktable-license
+Requires: darktable-man
 
 %description bin
 bin components for the darktable package.
@@ -77,6 +80,7 @@ data components for the darktable package.
 %package doc
 Summary: doc components for the darktable package.
 Group: Documentation
+Requires: darktable-man
 
 %description doc
 doc components for the darktable package.
@@ -86,9 +90,18 @@ doc components for the darktable package.
 Summary: lib components for the darktable package.
 Group: Libraries
 Requires: darktable-data
+Requires: darktable-license
 
 %description lib
 lib components for the darktable package.
+
+
+%package license
+Summary: license components for the darktable package.
+Group: Default
+
+%description license
+license components for the darktable package.
 
 
 %package locales
@@ -97,6 +110,14 @@ Group: Default
 
 %description locales
 locales components for the darktable package.
+
+
+%package man
+Summary: man components for the darktable package.
+Group: Default
+
+%description man
+man components for the darktable package.
 
 
 %prep
@@ -113,7 +134,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1526059160
+export SOURCE_DATE_EPOCH=1527916602
 mkdir clr-build
 pushd clr-build
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -136,7 +157,7 @@ make  %{?_smp_mflags}  || :
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1526059160
+export SOURCE_DATE_EPOCH=1527916602
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/lib64/haswell/avx512_1
 pushd clr-build-avx2
@@ -369,7 +390,6 @@ mv %{buildroot}/usr/lib64/haswell/darktable/views/*.so.avx2 %{buildroot}/usr/lib
 %files doc
 %defattr(-,root,root,-)
 %doc /usr/share/doc/darktable/*
-%doc /usr/share/man/man1/*
 
 %files lib
 %defattr(-,root,root,-)
@@ -396,10 +416,10 @@ mv %{buildroot}/usr/lib64/haswell/darktable/views/*.so.avx2 %{buildroot}/usr/lib
 /usr/lib64/darktable/plugins/libbasecurve.so
 /usr/lib64/darktable/plugins/libbasecurve.so.avx2
 /usr/lib64/darktable/plugins/libbilat.so
-/usr/lib64/darktable/plugins/libbilat.so.avx2
 /usr/lib64/darktable/plugins/libbilateral.so
 /usr/lib64/darktable/plugins/libbilateral.so.avx2
 /usr/lib64/darktable/plugins/libbloom.so
+/usr/lib64/darktable/plugins/libbloom.so.avx2
 /usr/lib64/darktable/plugins/libborders.so
 /usr/lib64/darktable/plugins/libborders.so.avx2
 /usr/lib64/darktable/plugins/libcacorrect.so
@@ -463,9 +483,11 @@ mv %{buildroot}/usr/lib64/haswell/darktable/views/*.so.avx2 %{buildroot}/usr/lib
 /usr/lib64/darktable/plugins/libhighpass.so
 /usr/lib64/darktable/plugins/libhighpass.so.avx2
 /usr/lib64/darktable/plugins/libhotpixels.so
+/usr/lib64/darktable/plugins/libhotpixels.so.avx2
 /usr/lib64/darktable/plugins/libinvert.so
 /usr/lib64/darktable/plugins/libinvert.so.avx2
 /usr/lib64/darktable/plugins/liblens.so
+/usr/lib64/darktable/plugins/liblens.so.avx2
 /usr/lib64/darktable/plugins/liblevels.so
 /usr/lib64/darktable/plugins/liblevels.so.avx2
 /usr/lib64/darktable/plugins/libliquify.so
@@ -488,7 +510,6 @@ mv %{buildroot}/usr/lib64/haswell/darktable/views/*.so.avx2 %{buildroot}/usr/lib
 /usr/lib64/darktable/plugins/librawprepare.so
 /usr/lib64/darktable/plugins/librawprepare.so.avx2
 /usr/lib64/darktable/plugins/librelight.so
-/usr/lib64/darktable/plugins/librelight.so.avx2
 /usr/lib64/darktable/plugins/librotatepixels.so
 /usr/lib64/darktable/plugins/librotatepixels.so.avx2
 /usr/lib64/darktable/plugins/libscalepixels.so
@@ -500,7 +521,6 @@ mv %{buildroot}/usr/lib64/haswell/darktable/views/*.so.avx2 %{buildroot}/usr/lib
 /usr/lib64/darktable/plugins/libsoften.so
 /usr/lib64/darktable/plugins/libsoften.so.avx2
 /usr/lib64/darktable/plugins/libsplittoning.so
-/usr/lib64/darktable/plugins/libsplittoning.so.avx2
 /usr/lib64/darktable/plugins/libspots.so
 /usr/lib64/darktable/plugins/libspots.so.avx2
 /usr/lib64/darktable/plugins/libtemperature.so
@@ -512,7 +532,6 @@ mv %{buildroot}/usr/lib64/haswell/darktable/views/*.so.avx2 %{buildroot}/usr/lib
 /usr/lib64/darktable/plugins/libvelvia.so
 /usr/lib64/darktable/plugins/libvelvia.so.avx2
 /usr/lib64/darktable/plugins/libvibrance.so
-/usr/lib64/darktable/plugins/libvibrance.so.avx2
 /usr/lib64/darktable/plugins/libvignette.so
 /usr/lib64/darktable/plugins/libvignette.so.avx2
 /usr/lib64/darktable/plugins/libwatermark.so
@@ -521,13 +540,11 @@ mv %{buildroot}/usr/lib64/haswell/darktable/views/*.so.avx2 %{buildroot}/usr/lib
 /usr/lib64/darktable/plugins/libzonesystem.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libbackgroundjobs.so
 /usr/lib64/darktable/plugins/lighttable/libcamera.so
-/usr/lib64/darktable/plugins/lighttable/libcamera.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libcollect.so
 /usr/lib64/darktable/plugins/lighttable/libcolorlabels.so
 /usr/lib64/darktable/plugins/lighttable/libcolorpicker.so
 /usr/lib64/darktable/plugins/lighttable/libcopy_history.so
 /usr/lib64/darktable/plugins/lighttable/libdarktable_label.so
-/usr/lib64/darktable/plugins/lighttable/libdarktable_label.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libexport.so
 /usr/lib64/darktable/plugins/lighttable/libfilmstrip.so
 /usr/lib64/darktable/plugins/lighttable/libfilter.so
@@ -556,10 +573,8 @@ mv %{buildroot}/usr/lib64/haswell/darktable/views/*.so.avx2 %{buildroot}/usr/lib
 /usr/lib64/darktable/plugins/lighttable/libselect.so
 /usr/lib64/darktable/plugins/lighttable/libsession.so
 /usr/lib64/darktable/plugins/lighttable/libsnapshots.so
-/usr/lib64/darktable/plugins/lighttable/libsnapshots.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libstyles.so
 /usr/lib64/darktable/plugins/lighttable/libtagging.so
-/usr/lib64/darktable/plugins/lighttable/libtagging.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libview_toolbox.so
 /usr/lib64/darktable/plugins/lighttable/libviewswitcher.so
 /usr/lib64/darktable/views/libdarkroom.so
@@ -570,10 +585,21 @@ mv %{buildroot}/usr/lib64/haswell/darktable/views/*.so.avx2 %{buildroot}/usr/lib
 /usr/lib64/darktable/views/liblighttable.so.avx2
 /usr/lib64/darktable/views/libslideshow.so
 /usr/lib64/darktable/views/libtethering.so
-/usr/lib64/darktable/views/libtethering.so.avx2
 /usr/lib64/haswell/darktable/plugins/imageio/format/libjpeg.so
 /usr/lib64/haswell/darktable/plugins/imageio/format/libpdf.so
 /usr/lib64/haswell/darktable/plugins/imageio/format/libpng.so
+
+%files license
+%defattr(-,root,root,-)
+/usr/share/doc/darktable/LICENSE
+
+%files man
+%defattr(-,root,root,-)
+/usr/share/man/man1/darktable-cli.1
+/usr/share/man/man1/darktable-cltest.1
+/usr/share/man/man1/darktable-cmstest.1
+/usr/share/man/man1/darktable-generate-cache.1
+/usr/share/man/man1/darktable.1
 
 %files locales -f darktable.lang
 %defattr(-,root,root,-)
