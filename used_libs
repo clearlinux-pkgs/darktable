@@ -1,15 +1,13 @@
 ld-linux-x86-64.so.2
-libIex-2_2.so.23
-libIlmImf-2_2.so.23
+libIex-2_3.so.24
+libIlmImf-2_3.so.24
 libX11.so.6
-libXrandr.so.2
 libc.so.6
 libcairo.so.2
 libcolord-gtk.so.1
 libcolord.so.2
 libcups.so.2
 libcurl.so.4
-libdl.so.2
 libexiv2.so.27
 libgcc_s.so.1
 libgdk-3.so.0

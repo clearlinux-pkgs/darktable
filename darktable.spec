@@ -4,10 +4,10 @@
 #
 Name     : darktable
 Version  : 2.6.0
-Release  : 32
+Release  : 33
 URL      : https://github.com/darktable-org/darktable/releases/download/release-2.6.0/darktable-2.6.0.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-2.6.0/darktable-2.6.0.tar.xz
-Summary  : A virtual Lighttable and Darkroom
+Summary  : Utility to organize and develop raw images
 Group    : Development/Tools
 License  : BSD-2-Clause-FreeBSD GPL-3.0 GPL-3.0+ LGPL-2.1 MIT
 Requires: darktable-bin = %{version}-%{release}
@@ -149,7 +149,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1545683045
+export SOURCE_DATE_EPOCH=1549931917
 mkdir -p clr-build
 pushd clr-build
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -172,7 +172,7 @@ make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1545683045
+export SOURCE_DATE_EPOCH=1549931917
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/darktable
 cp LICENSE %{buildroot}/usr/share/package-licenses/darktable/LICENSE
