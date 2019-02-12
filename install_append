@@ -13,3 +13,4 @@
 #mv %{buildroot}/usr/lib64/haswell/darktable/views/*.so.avx2 %{buildroot}/usr/lib64/darktable/views/
 
 
+ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so

@@ -4,7 +4,7 @@
 #
 Name     : darktable
 Version  : 2.6.0
-Release  : 33
+Release  : 34
 URL      : https://github.com/darktable-org/darktable/releases/download/release-2.6.0/darktable-2.6.0.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-2.6.0/darktable-2.6.0.tar.xz
 Summary  : Utility to organize and develop raw images
@@ -149,7 +149,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1549931917
+export SOURCE_DATE_EPOCH=1549937333
 mkdir -p clr-build
 pushd clr-build
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -172,7 +172,7 @@ make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1549931917
+export SOURCE_DATE_EPOCH=1549937333
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/darktable
 cp LICENSE %{buildroot}/usr/share/package-licenses/darktable/LICENSE
@@ -187,6 +187,9 @@ pushd clr-build
 %make_install
 popd
 %find_lang darktable
+## install_append content
+ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -597,6 +600,7 @@ popd
 /usr/lib64/darktable/views/libprint.so
 /usr/lib64/darktable/views/libslideshow.so
 /usr/lib64/darktable/views/libtethering.so
+/usr/lib64/libdarktable.so
 
 %files license
 %defattr(0644,root,root,0755)
