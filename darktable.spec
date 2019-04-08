@@ -6,7 +6,7 @@
 #
 Name     : darktable
 Version  : 2.6.2
-Release  : 37
+Release  : 38
 URL      : https://github.com/darktable-org/darktable/releases/download/release-2.6.2/darktable-2.6.2.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-2.6.2/darktable-2.6.2.tar.xz
 Source99 : https://github.com/darktable-org/darktable/releases/download/release-2.6.2/darktable-2.6.2.tar.xz.asc
