@@ -4,7 +4,7 @@
 #
 Name     : darktable
 Version  : 07.19
-Release  : 40
+Release  : 41
 URL      : https://github.com/darktable-org/darktable/archive/master/darktable-master_07_19.tar.gz
 Source0  : https://github.com/darktable-org/darktable/archive/master/darktable-master_07_19.tar.gz
 Source1  : https://github.com/darktable-org/rawspeed/archive/165a298cd3721fad92cb528ba314925731b388e3/rawspeed-master_07_19.tar.gz
@@ -17,7 +17,6 @@ Requires: darktable-lib = %{version}-%{release}
 Requires: darktable-license = %{version}-%{release}
 Requires: darktable-locales = %{version}-%{release}
 Requires: darktable-man = %{version}-%{release}
-BuildRequires : beignet-dev
 BuildRequires : buildreq-cmake
 BuildRequires : cmake
 BuildRequires : colord-dev
@@ -49,6 +48,7 @@ BuildRequires : llvm
 BuildRequires : llvm-dev
 BuildRequires : lua-dev
 BuildRequires : ocl-icd-dev
+BuildRequires : opencl-headers-dev
 BuildRequires : perl(XML::Parser)
 BuildRequires : pkg-config
 BuildRequires : pkgconfig(colord)
@@ -149,8 +149,8 @@ cp -r %{_topdir}/BUILD/rawspeed-165a298cd3721fad92cb528ba314925731b388e3/* %{_to
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1564037522
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1564517368
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -175,7 +175,7 @@ make  %{?_smp_mflags} VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1564037522
+export SOURCE_DATE_EPOCH=1564517368
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/darktable
 cp LICENSE %{buildroot}/usr/share/package-licenses/darktable/LICENSE

@@ -3,7 +3,7 @@
 llvm-dev
 libxml2-dev
 libxslt-dev
-beignet-dev
+opencl-headers-dev
 ocl-icd-dev
 llvm
 desktop-file-utils
