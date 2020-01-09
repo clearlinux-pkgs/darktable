@@ -4,7 +4,7 @@
 #
 Name     : darktable
 Version  : 07.19
-Release  : 42
+Release  : 44
 URL      : https://github.com/darktable-org/darktable/archive/master/darktable-master_07_19.tar.gz
 Source0  : https://github.com/darktable-org/darktable/archive/master/darktable-master_07_19.tar.gz
 Source1  : https://github.com/darktable-org/rawspeed/archive/165a298cd3721fad92cb528ba314925731b388e3/rawspeed-master_07_19.tar.gz
@@ -17,6 +17,7 @@ Requires: darktable-lib = %{version}-%{release}
 Requires: darktable-license = %{version}-%{release}
 Requires: darktable-locales = %{version}-%{release}
 Requires: darktable-man = %{version}-%{release}
+Requires: iso-codes
 BuildRequires : buildreq-cmake
 BuildRequires : cmake
 BuildRequires : colord-dev
@@ -32,6 +33,7 @@ BuildRequires : glib-dev
 BuildRequires : glibc-dev
 BuildRequires : gtk3-dev
 BuildRequires : intltool
+BuildRequires : iso-codes
 BuildRequires : json-glib-dev
 BuildRequires : lcms2-dev
 BuildRequires : lensfun-dev
@@ -138,10 +140,11 @@ man components for the darktable package.
 
 %prep
 %setup -q -n darktable-master
-cd ..
-%setup -q -T -D -n darktable-master -b 1
+cd %{_builddir}
+tar xf %{_sourcedir}/rawspeed-master_07_19.tar.gz
+cd %{_builddir}/darktable-master
 mkdir -p src/external/rawspeed
-cp -r %{_topdir}/BUILD/rawspeed-165a298cd3721fad92cb528ba314925731b388e3/* %{_topdir}/BUILD/darktable-master/src/external/rawspeed
+cp -r %{_builddir}/rawspeed-165a298cd3721fad92cb528ba314925731b388e3/* %{_builddir}/darktable-master/src/external/rawspeed
 %patch1 -p1
 %patch2 -p1
 
@@ -149,8 +152,8 @@ cp -r %{_topdir}/BUILD/rawspeed-165a298cd3721fad92cb528ba314925731b388e3/* %{_to
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1564548548
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1578600800
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -159,7 +162,7 @@ export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-s
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 %cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DDONT_USE_INTERNAL_LUA=Off -DBINARY_PACKAGE_BUILD=ON  -DRAWSPEED_ENABLE_LTO=ON
-make  %{?_smp_mflags} VERBOSE=1
+make  %{?_smp_mflags}  VERBOSE=1
 popd
 mkdir -p clr-build-avx2
 pushd clr-build-avx2
@@ -171,18 +174,18 @@ export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fn
 export CFLAGS="$CFLAGS -march=haswell -m64"
 export CXXFLAGS="$CXXFLAGS -march=haswell -m64"
 %cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DDONT_USE_INTERNAL_LUA=Off -DBINARY_PACKAGE_BUILD=ON  -DRAWSPEED_ENABLE_LTO=ON
-make  %{?_smp_mflags} VERBOSE=1
+make  %{?_smp_mflags}  VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1564548548
+export SOURCE_DATE_EPOCH=1578600800
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/darktable
-cp LICENSE %{buildroot}/usr/share/package-licenses/darktable/LICENSE
-cp data/pswp/LICENSE %{buildroot}/usr/share/package-licenses/darktable/data_pswp_LICENSE
-cp src/external/CL/copyright %{buildroot}/usr/share/package-licenses/darktable/src_external_CL_copyright
-cp src/external/LuaAutoC/LICENSE.md %{buildroot}/usr/share/package-licenses/darktable/src_external_LuaAutoC_LICENSE.md
-cp src/external/rawspeed/LICENSE %{buildroot}/usr/share/package-licenses/darktable/src_external_rawspeed_LICENSE
+cp %{_builddir}/darktable-master/LICENSE %{buildroot}/usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+cp %{_builddir}/darktable-master/data/pswp/LICENSE %{buildroot}/usr/share/package-licenses/darktable/d9f41c058914394e203adb253057643e047576a3
+cp %{_builddir}/darktable-master/src/external/CL/copyright %{buildroot}/usr/share/package-licenses/darktable/d48da049966f2a7d07ccb5ded40e9ead9c8dfe1a
+cp %{_builddir}/darktable-master/src/external/LuaAutoC/LICENSE.md %{buildroot}/usr/share/package-licenses/darktable/6baddc7988322d021a187ff7d1d0fb9e2a784e20
+cp %{_builddir}/darktable-master/src/external/rawspeed/LICENSE %{buildroot}/usr/share/package-licenses/darktable/3704f4680301a60004b20f94e0b5b8c7ff1484a9
 pushd clr-build-avx2
 %make_install_avx2  || :
 popd
@@ -191,6 +194,21 @@ pushd clr-build
 popd
 %find_lang darktable
 ## install_append content
+#for i in %{buildroot}/usr/lib64/haswell/darktable/*.so; do mv $i $i.avx2 ; done
+#mv %{buildroot}/usr/lib64/haswell/darktable/*.so.avx2 %{buildroot}/usr/lib64/darktable/
+
+#for i in %{buildroot}/usr/lib64/haswell/darktable/plugins/*.so; do mv $i $i.avx2 ; done
+#mv %{buildroot}/usr/lib64/haswell/darktable/plugins/*.so.avx2 %{buildroot}/usr/lib64/darktable/plugins/
+
+
+#for i in %{buildroot}/usr/lib64/haswell/darktable/plugins/lighttable/*.so; do mv $i $i.avx2 ; done
+#mv %{buildroot}/usr/lib64/haswell/darktable/plugins/lighttable/*.so.avx2 %{buildroot}/usr/lib64/darktable/plugins/lighttable/
+
+
+#for i in %{buildroot}/usr/lib64/haswell/darktable/views/*.so; do mv $i $i.avx2 ; done
+#mv %{buildroot}/usr/lib64/haswell/darktable/views/*.so.avx2 %{buildroot}/usr/lib64/darktable/views/
+
+
 ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 ## install_append end
 
@@ -462,10 +480,10 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/libbasicadj.so
 /usr/lib64/darktable/plugins/libbasicadj.so.avx2
 /usr/lib64/darktable/plugins/libbilat.so
+/usr/lib64/darktable/plugins/libbilat.so.avx2
 /usr/lib64/darktable/plugins/libbilateral.so
 /usr/lib64/darktable/plugins/libbilateral.so.avx2
 /usr/lib64/darktable/plugins/libbloom.so
-/usr/lib64/darktable/plugins/libbloom.so.avx2
 /usr/lib64/darktable/plugins/libborders.so
 /usr/lib64/darktable/plugins/libborders.so.avx2
 /usr/lib64/darktable/plugins/libcacorrect.so
@@ -520,7 +538,6 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/libgrain.so
 /usr/lib64/darktable/plugins/libgrain.so.avx2
 /usr/lib64/darktable/plugins/libhazeremoval.so
-/usr/lib64/darktable/plugins/libhazeremoval.so.avx2
 /usr/lib64/darktable/plugins/libhighlights.so
 /usr/lib64/darktable/plugins/libhighlights.so.avx2
 /usr/lib64/darktable/plugins/libhighpass.so
@@ -530,9 +547,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/libinvert.so
 /usr/lib64/darktable/plugins/libinvert.so.avx2
 /usr/lib64/darktable/plugins/liblens.so
-/usr/lib64/darktable/plugins/liblens.so.avx2
 /usr/lib64/darktable/plugins/liblevels.so
-/usr/lib64/darktable/plugins/liblevels.so.avx2
 /usr/lib64/darktable/plugins/libliquify.so
 /usr/lib64/darktable/plugins/libliquify.so.avx2
 /usr/lib64/darktable/plugins/liblowlight.so
@@ -547,7 +562,6 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/libnlmeans.so
 /usr/lib64/darktable/plugins/libnlmeans.so.avx2
 /usr/lib64/darktable/plugins/liboverexposed.so
-/usr/lib64/darktable/plugins/liboverexposed.so.avx2
 /usr/lib64/darktable/plugins/libprofile_gamma.so
 /usr/lib64/darktable/plugins/libprofile_gamma.so.avx2
 /usr/lib64/darktable/plugins/librawdenoise.so
@@ -644,11 +658,11 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/darktable/LICENSE
-/usr/share/package-licenses/darktable/data_pswp_LICENSE
-/usr/share/package-licenses/darktable/src_external_CL_copyright
-/usr/share/package-licenses/darktable/src_external_LuaAutoC_LICENSE.md
-/usr/share/package-licenses/darktable/src_external_rawspeed_LICENSE
+/usr/share/package-licenses/darktable/3704f4680301a60004b20f94e0b5b8c7ff1484a9
+/usr/share/package-licenses/darktable/6baddc7988322d021a187ff7d1d0fb9e2a784e20
+/usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+/usr/share/package-licenses/darktable/d48da049966f2a7d07ccb5ded40e9ead9c8dfe1a
+/usr/share/package-licenses/darktable/d9f41c058914394e203adb253057643e047576a3
 
 %files man
 %defattr(0644,root,root,0755)
