@@ -4,7 +4,7 @@
 #
 Name     : darktable
 Version  : 07.19
-Release  : 44
+Release  : 45
 URL      : https://github.com/darktable-org/darktable/archive/master/darktable-master_07_19.tar.gz
 Source0  : https://github.com/darktable-org/darktable/archive/master/darktable-master_07_19.tar.gz
 Source1  : https://github.com/darktable-org/rawspeed/archive/165a298cd3721fad92cb528ba314925731b388e3/rawspeed-master_07_19.tar.gz
@@ -153,7 +153,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1578600800
+export SOURCE_DATE_EPOCH=1578864986
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -178,7 +178,7 @@ make  %{?_smp_mflags}  VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1578600800
+export SOURCE_DATE_EPOCH=1578864986
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/darktable
 cp %{_builddir}/darktable-master/LICENSE %{buildroot}/usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02
@@ -480,10 +480,10 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/libbasicadj.so
 /usr/lib64/darktable/plugins/libbasicadj.so.avx2
 /usr/lib64/darktable/plugins/libbilat.so
-/usr/lib64/darktable/plugins/libbilat.so.avx2
 /usr/lib64/darktable/plugins/libbilateral.so
 /usr/lib64/darktable/plugins/libbilateral.so.avx2
 /usr/lib64/darktable/plugins/libbloom.so
+/usr/lib64/darktable/plugins/libbloom.so.avx2
 /usr/lib64/darktable/plugins/libborders.so
 /usr/lib64/darktable/plugins/libborders.so.avx2
 /usr/lib64/darktable/plugins/libcacorrect.so
@@ -538,6 +538,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/libgrain.so
 /usr/lib64/darktable/plugins/libgrain.so.avx2
 /usr/lib64/darktable/plugins/libhazeremoval.so
+/usr/lib64/darktable/plugins/libhazeremoval.so.avx2
 /usr/lib64/darktable/plugins/libhighlights.so
 /usr/lib64/darktable/plugins/libhighlights.so.avx2
 /usr/lib64/darktable/plugins/libhighpass.so
@@ -547,7 +548,9 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/libinvert.so
 /usr/lib64/darktable/plugins/libinvert.so.avx2
 /usr/lib64/darktable/plugins/liblens.so
+/usr/lib64/darktable/plugins/liblens.so.avx2
 /usr/lib64/darktable/plugins/liblevels.so
+/usr/lib64/darktable/plugins/liblevels.so.avx2
 /usr/lib64/darktable/plugins/libliquify.so
 /usr/lib64/darktable/plugins/libliquify.so.avx2
 /usr/lib64/darktable/plugins/liblowlight.so
@@ -562,6 +565,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/libnlmeans.so
 /usr/lib64/darktable/plugins/libnlmeans.so.avx2
 /usr/lib64/darktable/plugins/liboverexposed.so
+/usr/lib64/darktable/plugins/liboverexposed.so.avx2
 /usr/lib64/darktable/plugins/libprofile_gamma.so
 /usr/lib64/darktable/plugins/libprofile_gamma.so.avx2
 /usr/lib64/darktable/plugins/librawdenoise.so
