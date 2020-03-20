@@ -1,0 +1,27 @@
+From 756b8a90a6cd32e29931ad3a76104871c2274d81 Mon Sep 17 00:00:00 2001
+From: William Douglas <william.douglas@intel.com>
+Date: Fri, 20 Mar 2020 13:35:55 -0700
+Subject: [PATCH] build
+
+---
+ data/kernels/CMakeLists.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/data/kernels/CMakeLists.txt b/data/kernels/CMakeLists.txt
+index ce947be..fdb09fe 100644
+--- a/data/kernels/CMakeLists.txt
++++ b/data/kernels/CMakeLists.txt
+@@ -31,8 +31,8 @@ macro (testcompile_opencl_kernel IN)
+ endmacro (testcompile_opencl_kernel)
+ 
+ if (TESTBUILD_OPENCL_PROGRAMS)
+-  foreach(IN ${DT_OPENCL_KERNELS})
+-    testcompile_opencl_kernel(${IN})
++  foreach(i ${DT_OPENCL_KERNELS})
++    testcompile_opencl_kernel(${i})
+   endforeach()
+ endif()
+ 
+-- 
+2.25.1
+
