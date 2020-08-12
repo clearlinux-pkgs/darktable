@@ -5,12 +5,12 @@
 # Source0 file verified with key 0x18DCA123F949BD3B (pascal@obry.net)
 #
 Name     : darktable
-Version  : 3.0.1
-Release  : 47
-URL      : https://github.com/darktable-org/darktable/releases/download/release-3.0.1/darktable-3.0.1.tar.xz
-Source0  : https://github.com/darktable-org/darktable/releases/download/release-3.0.1/darktable-3.0.1.tar.xz
+Version  : 3.2.1
+Release  : 48
+URL      : https://github.com/darktable-org/darktable/releases/download/release-3.2.1/darktable-3.2.1.tar.xz
+Source0  : https://github.com/darktable-org/darktable/releases/download/release-3.2.1/darktable-3.2.1.tar.xz
 Source1  : https://github.com/darktable-org/rawspeed/archive/v3.3.tar.gz
-Source2  : https://github.com/darktable-org/darktable/releases/download/release-3.0.1/darktable-3.0.1.tar.xz.asc
+Source2  : https://github.com/darktable-org/darktable/releases/download/release-3.2.1/darktable-3.2.1.tar.xz.asc
 Summary  : A virtual Lighttable and Darkroom
 Group    : Development/Tools
 License  : BSD-2-Clause-FreeBSD GPL-3.0 GPL-3.0+ LGPL-2.1 MIT
@@ -23,6 +23,7 @@ Requires: darktable-man = %{version}-%{release}
 Requires: iso-codes
 BuildRequires : buildreq-cmake
 BuildRequires : cmake
+BuildRequires : cmocka-dev
 BuildRequires : colord-dev
 BuildRequires : cups-dev
 BuildRequires : curl-dev
@@ -31,6 +32,7 @@ BuildRequires : doxygen
 BuildRequires : exiv2-dev
 BuildRequires : expat-dev
 BuildRequires : extra-cmake-modules pkgconfig(OpenEXR)
+BuildRequires : extra-cmake-modules pkgconfig(glib-2.0)
 BuildRequires : gettext-dev
 BuildRequires : glib-dev
 BuildRequires : glibc-dev
@@ -54,8 +56,10 @@ BuildRequires : llvm-dev
 BuildRequires : lua-dev
 BuildRequires : ocl-icd-dev
 BuildRequires : opencl-headers-dev
+BuildRequires : openjpeg
 BuildRequires : perl(XML::Parser)
 BuildRequires : pkg-config
+BuildRequires : pkgconfig(MagickWand)
 BuildRequires : pkgconfig(colord)
 BuildRequires : pkgconfig(colord-gtk)
 BuildRequires : pkgconfig(exiv2)
@@ -75,7 +79,6 @@ BuildRequires : tiff-dev
 BuildRequires : zlib-dev
 Patch1: default-fpmath.patch
 Patch2: avx2-libs.patch
-Patch3: 0001-build.patch
 
 %description
 darktable is a virtual lighttable and darkroom for photographers: it manages 
@@ -144,53 +147,56 @@ man components for the darktable package.
 
 
 %prep
-%setup -q -n darktable-3.0.1
+%setup -q -n darktable-3.2.1
 cd %{_builddir}
 tar xf %{_sourcedir}/v3.3.tar.gz
-cd %{_builddir}/darktable-3.0.1
+cd %{_builddir}/darktable-3.2.1
 mkdir -p src/external/rawspeed
-cp -r %{_builddir}/rawspeed-3.3/* %{_builddir}/darktable-3.0.1/src/external/rawspeed
+cp -r %{_builddir}/rawspeed-3.3/* %{_builddir}/darktable-3.2.1/src/external/rawspeed
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1584982535
+export SOURCE_DATE_EPOCH=1597272891
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FFLAGS="$FFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 %cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DDONT_USE_INTERNAL_LUA=Off -DBINARY_PACKAGE_BUILD=ON  -DRAWSPEED_ENABLE_LTO=ON
-make  %{?_smp_mflags}  VERBOSE=1
+make  %{?_smp_mflags}
 popd
 mkdir -p clr-build-avx2
 pushd clr-build-avx2
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
+export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
+export FFLAGS="$FFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
 export CFLAGS="$CFLAGS -march=haswell -m64"
 export CXXFLAGS="$CXXFLAGS -march=haswell -m64"
+export FFLAGS="$FFLAGS -march=haswell -m64"
+export FCFLAGS="$FCFLAGS -march=haswell -m64"
 %cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DDONT_USE_INTERNAL_LUA=Off -DBINARY_PACKAGE_BUILD=ON  -DRAWSPEED_ENABLE_LTO=ON
-make  %{?_smp_mflags}  VERBOSE=1
+make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1584982535
+export SOURCE_DATE_EPOCH=1597272891
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/darktable
-cp %{_builddir}/darktable-3.0.1/LICENSE %{buildroot}/usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02
-cp %{_builddir}/darktable-3.0.1/data/pswp/LICENSE %{buildroot}/usr/share/package-licenses/darktable/d9f41c058914394e203adb253057643e047576a3
-cp %{_builddir}/darktable-3.0.1/src/external/LuaAutoC/LICENSE.md %{buildroot}/usr/share/package-licenses/darktable/6baddc7988322d021a187ff7d1d0fb9e2a784e20
-cp %{_builddir}/darktable-3.0.1/src/external/rawspeed/LICENSE %{buildroot}/usr/share/package-licenses/darktable/3704f4680301a60004b20f94e0b5b8c7ff1484a9
+cp %{_builddir}/darktable-3.2.1/LICENSE %{buildroot}/usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+cp %{_builddir}/darktable-3.2.1/data/pswp/LICENSE %{buildroot}/usr/share/package-licenses/darktable/d9f41c058914394e203adb253057643e047576a3
+cp %{_builddir}/darktable-3.2.1/src/external/LuaAutoC/LICENSE.md %{buildroot}/usr/share/package-licenses/darktable/6baddc7988322d021a187ff7d1d0fb9e2a784e20
+cp %{_builddir}/darktable-3.2.1/src/external/OpenCL/LICENSE %{buildroot}/usr/share/package-licenses/darktable/7235f6784b4eae4c40a259dcecc7a20e6c487263
+cp %{_builddir}/darktable-3.2.1/src/external/libxcf/LICENSE %{buildroot}/usr/share/package-licenses/darktable/fc356b2c50a063b663cc14dde29bc0ab9e7bec51
+cp %{_builddir}/darktable-3.2.1/src/external/rawspeed/LICENSE %{buildroot}/usr/share/package-licenses/darktable/3704f4680301a60004b20f94e0b5b8c7ff1484a9
 cp %{_builddir}/rawspeed-3.3/LICENSE %{buildroot}/usr/share/package-licenses/darktable/3704f4680301a60004b20f94e0b5b8c7ff1484a9
 pushd clr-build-avx2
 %make_install_avx2  || :
@@ -272,6 +278,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/share/darktable/kernels/liquify.cl
 /usr/share/darktable/kernels/locallaplacian.cl
 /usr/share/darktable/kernels/lut3d.cl
+/usr/share/darktable/kernels/negadoctor.cl
 /usr/share/darktable/kernels/nlmeans.cl
 /usr/share/darktable/kernels/programs.conf
 /usr/share/darktable/kernels/retouch.cl
@@ -475,7 +482,10 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/imageio/format/libpng.so.avx2
 /usr/lib64/darktable/plugins/imageio/format/libppm.so
 /usr/lib64/darktable/plugins/imageio/format/libtiff.so
+/usr/lib64/darktable/plugins/imageio/format/libtiff.so.avx2
 /usr/lib64/darktable/plugins/imageio/format/libwebp.so
+/usr/lib64/darktable/plugins/imageio/format/libxcf.so
+/usr/lib64/darktable/plugins/imageio/format/libxcf.so.avx2
 /usr/lib64/darktable/plugins/imageio/storage/libdisk.so
 /usr/lib64/darktable/plugins/imageio/storage/libemail.so
 /usr/lib64/darktable/plugins/imageio/storage/libgallery.so
@@ -574,6 +584,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/libmask_manager.so
 /usr/lib64/darktable/plugins/libmonochrome.so
 /usr/lib64/darktable/plugins/libmonochrome.so.avx2
+/usr/lib64/darktable/plugins/libnegadoctor.so
 /usr/lib64/darktable/plugins/libnlmeans.so
 /usr/lib64/darktable/plugins/libnlmeans.so.avx2
 /usr/lib64/darktable/plugins/liboverexposed.so
@@ -624,6 +635,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/lighttable/libbackgroundjobs.so
 /usr/lib64/darktable/plugins/lighttable/libcamera.so
 /usr/lib64/darktable/plugins/lighttable/libcollect.so
+/usr/lib64/darktable/plugins/lighttable/libcollect.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libcolorlabels.so
 /usr/lib64/darktable/plugins/lighttable/libcolorpicker.so
 /usr/lib64/darktable/plugins/lighttable/libcolorpicker.so.avx2
@@ -637,10 +649,12 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/lighttable/libglobal_toolbox.so
 /usr/lib64/darktable/plugins/lighttable/libhinter.so
 /usr/lib64/darktable/plugins/lighttable/libhistogram.so
+/usr/lib64/darktable/plugins/lighttable/libhistogram.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libhistory.so
 /usr/lib64/darktable/plugins/lighttable/libimage.so
 /usr/lib64/darktable/plugins/lighttable/libimage_infos.so
 /usr/lib64/darktable/plugins/lighttable/libimport.so
+/usr/lib64/darktable/plugins/lighttable/libioporder.so
 /usr/lib64/darktable/plugins/lighttable/liblighttable_mode.so
 /usr/lib64/darktable/plugins/lighttable/liblive_view.so
 /usr/lib64/darktable/plugins/lighttable/libmasks.so
@@ -667,7 +681,6 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/views/libdarkroom.so.avx2
 /usr/lib64/darktable/views/libknight.so
 /usr/lib64/darktable/views/liblighttable.so
-/usr/lib64/darktable/views/liblighttable.so.avx2
 /usr/lib64/darktable/views/libprint.so
 /usr/lib64/darktable/views/libslideshow.so
 /usr/lib64/darktable/views/libtethering.so
@@ -677,8 +690,10 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/darktable/3704f4680301a60004b20f94e0b5b8c7ff1484a9
 /usr/share/package-licenses/darktable/6baddc7988322d021a187ff7d1d0fb9e2a784e20
+/usr/share/package-licenses/darktable/7235f6784b4eae4c40a259dcecc7a20e6c487263
 /usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 /usr/share/package-licenses/darktable/d9f41c058914394e203adb253057643e047576a3
+/usr/share/package-licenses/darktable/fc356b2c50a063b663cc14dde29bc0ab9e7bec51
 
 %files man
 %defattr(0644,root,root,0755)
