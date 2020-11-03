@@ -6,7 +6,7 @@
 #
 Name     : darktable
 Version  : 3.2.1
-Release  : 49
+Release  : 50
 URL      : https://github.com/darktable-org/darktable/releases/download/release-3.2.1/darktable-3.2.1.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-3.2.1/darktable-3.2.1.tar.xz
 Source1  : https://github.com/darktable-org/rawspeed/archive/v3.3.tar.gz
