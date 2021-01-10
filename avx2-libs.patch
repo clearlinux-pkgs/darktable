@@ -1,26 +1,3 @@
---- darktable-2.2.5/src/libs/lib.c~	2017-05-28 14:22:21.000000000 +0000
-+++ darktable-2.2.5/src/libs/lib.c	2017-08-04 12:10:33.212763654 +0000
-@@ -508,13 +508,19 @@
- 
- static int dt_lib_load_module(void *m, const char *libname, const char *plugin_name)
- {
-   dt_lib_module_t *module = (dt_lib_module_t *)m;
-+  char avx2libname[8192];
-+  sprintf(avx2libname, "%s.avx2", libname);
-   module->dt = &darktable;
-   module->widget = NULL;
-   module->expander = NULL;
-+  module->module = NULL;
-   g_strlcpy(module->plugin_name, plugin_name, sizeof(module->plugin_name));
-   dt_print(DT_DEBUG_CONTROL, "[lib_load_module] loading lib `%s' from %s\n", plugin_name, libname);
--  module->module = g_module_open(libname, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
-+  if (__builtin_cpu_supports("avx2"))
-+	  module->module = g_module_open(avx2libname, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
-+  if (!module->module)
-+	  module->module = g_module_open(libname, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
-   if(!module->module) goto error;
-   int (*version)();
-   if(!g_module_symbol(module->module, "dt_module_dt_version", (gpointer) & (version))) goto error;
 --- darktable-2.2.5/src/common/dynload.c~	2017-05-28 14:22:21.000000000 +0000
 +++ darktable-2.2.5/src/common/dynload.c	2017-08-04 12:26:09.762458898 +0000
 @@ -44,6 +44,7 @@
@@ -45,23 +22,3 @@
  
    if(gmodule != NULL)
    {
---- darktable-2.2.5/src/develop/imageop.c~	2017-05-28 14:22:21.000000000 +0000
-+++ darktable-2.2.5/src/develop/imageop.c	2017-08-04 12:44:06.366059204 +0000
-@@ -206,10 +206,16 @@
- int dt_iop_load_module_so(void *m, const char *libname, const char *op)
- {
-   dt_iop_module_so_t *module = (dt_iop_module_so_t *)m;
-+  char avxname[8192];
-+  sprintf(avxname, "%s.avx2", libname);
-   g_strlcpy(module->op, op, 20);
-   module->data = NULL;
-   dt_print(DT_DEBUG_CONTROL, "[iop_load_module] loading iop `%s' from %s\n", op, libname);
--  module->module = g_module_open(libname, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
-+  module->module = NULL;
-+  if (__builtin_cpu_supports("avx2"))
-+	  module->module = g_module_open(avxname, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
-+  if (!module->module)
-+	  module->module = g_module_open(libname, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
-   if(!module->module) goto error;
-   int (*version)();
-   if(!g_module_symbol(module->module, "dt_module_dt_version", (gpointer) & (version))) goto error;
