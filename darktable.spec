@@ -5,15 +5,15 @@
 # Source0 file verified with key 0x18DCA123F949BD3B (pascal@obry.net)
 #
 Name     : darktable
-Version  : 3.4.0
-Release  : 52
-URL      : https://github.com/darktable-org/darktable/releases/download/release-3.4.0/darktable-3.4.0.tar.xz
-Source0  : https://github.com/darktable-org/darktable/releases/download/release-3.4.0/darktable-3.4.0.tar.xz
+Version  : 3.4.1
+Release  : 53
+URL      : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
+Source0  : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source1  : https://github.com/darktable-org/rawspeed/archive/v3.3.tar.gz
-Source2  : https://github.com/darktable-org/darktable/releases/download/release-3.4.0/darktable-3.4.0.tar.xz.asc
+Source2  : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz.asc
 Summary  : A virtual Lighttable and Darkroom
 Group    : Development/Tools
-License  : BSD-2-Clause-FreeBSD GPL-3.0 GPL-3.0+ LGPL-2.1 MIT
+License  : BSD-2-Clause-FreeBSD GPL-3.0 GPL-3.0+ LGPL-2.1 MIT WTFPL
 Requires: darktable-bin = %{version}-%{release}
 Requires: darktable-data = %{version}-%{release}
 Requires: darktable-lib = %{version}-%{release}
@@ -147,12 +147,12 @@ man components for the darktable package.
 
 
 %prep
-%setup -q -n darktable-3.4.0
+%setup -q -n darktable-3.4.1
 cd %{_builddir}
 tar xf %{_sourcedir}/v3.3.tar.gz
-cd %{_builddir}/darktable-3.4.0
+cd %{_builddir}/darktable-3.4.1
 mkdir -p src/external/rawspeed
-cp -r %{_builddir}/rawspeed-3.3/* %{_builddir}/darktable-3.4.0/src/external/rawspeed
+cp -r %{_builddir}/rawspeed-3.3/* %{_builddir}/darktable-3.4.1/src/external/rawspeed
 %patch1 -p1
 %patch2 -p1
 
@@ -161,7 +161,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1610303903
+export SOURCE_DATE_EPOCH=1613616088
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -188,16 +188,17 @@ make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1610303903
+export SOURCE_DATE_EPOCH=1613616088
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/darktable
-cp %{_builddir}/darktable-3.4.0/LICENSE %{buildroot}/usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02
-cp %{_builddir}/darktable-3.4.0/data/pswp/LICENSE %{buildroot}/usr/share/package-licenses/darktable/d9f41c058914394e203adb253057643e047576a3
-cp %{_builddir}/darktable-3.4.0/src/external/LuaAutoC/LICENSE.md %{buildroot}/usr/share/package-licenses/darktable/6baddc7988322d021a187ff7d1d0fb9e2a784e20
-cp %{_builddir}/darktable-3.4.0/src/external/OpenCL/LICENSE %{buildroot}/usr/share/package-licenses/darktable/7235f6784b4eae4c40a259dcecc7a20e6c487263
-cp %{_builddir}/darktable-3.4.0/src/external/libxcf/LICENSE %{buildroot}/usr/share/package-licenses/darktable/fc356b2c50a063b663cc14dde29bc0ab9e7bec51
-cp %{_builddir}/darktable-3.4.0/src/external/rawspeed/LICENSE %{buildroot}/usr/share/package-licenses/darktable/3704f4680301a60004b20f94e0b5b8c7ff1484a9
-cp %{_builddir}/darktable-3.4.0/src/external/whereami/LICENSE.MIT %{buildroot}/usr/share/package-licenses/darktable/c996ffd4c579d586b7d86e158af6042018c3c422
+cp %{_builddir}/darktable-3.4.1/LICENSE %{buildroot}/usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+cp %{_builddir}/darktable-3.4.1/data/pswp/LICENSE %{buildroot}/usr/share/package-licenses/darktable/d9f41c058914394e203adb253057643e047576a3
+cp %{_builddir}/darktable-3.4.1/src/external/LuaAutoC/LICENSE.md %{buildroot}/usr/share/package-licenses/darktable/6baddc7988322d021a187ff7d1d0fb9e2a784e20
+cp %{_builddir}/darktable-3.4.1/src/external/OpenCL/LICENSE %{buildroot}/usr/share/package-licenses/darktable/7235f6784b4eae4c40a259dcecc7a20e6c487263
+cp %{_builddir}/darktable-3.4.1/src/external/libxcf/LICENSE %{buildroot}/usr/share/package-licenses/darktable/fc356b2c50a063b663cc14dde29bc0ab9e7bec51
+cp %{_builddir}/darktable-3.4.1/src/external/rawspeed/LICENSE %{buildroot}/usr/share/package-licenses/darktable/3704f4680301a60004b20f94e0b5b8c7ff1484a9
+cp %{_builddir}/darktable-3.4.1/src/external/whereami/LICENSE.MIT %{buildroot}/usr/share/package-licenses/darktable/c996ffd4c579d586b7d86e158af6042018c3c422
+cp %{_builddir}/darktable-3.4.1/src/external/whereami/LICENSE.WTFPLv2 %{buildroot}/usr/share/package-licenses/darktable/75e5bae837deb898dae4cb65c4890b1ab825c6b6
 cp %{_builddir}/rawspeed-3.3/LICENSE %{buildroot}/usr/share/package-licenses/darktable/3704f4680301a60004b20f94e0b5b8c7ff1484a9
 pushd clr-build-avx2
 %make_install_avx2  || :
@@ -696,6 +697,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/share/package-licenses/darktable/3704f4680301a60004b20f94e0b5b8c7ff1484a9
 /usr/share/package-licenses/darktable/6baddc7988322d021a187ff7d1d0fb9e2a784e20
 /usr/share/package-licenses/darktable/7235f6784b4eae4c40a259dcecc7a20e6c487263
+/usr/share/package-licenses/darktable/75e5bae837deb898dae4cb65c4890b1ab825c6b6
 /usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 /usr/share/package-licenses/darktable/c996ffd4c579d586b7d86e158af6042018c3c422
 /usr/share/package-licenses/darktable/d9f41c058914394e203adb253057643e047576a3
