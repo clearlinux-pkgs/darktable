@@ -21,7 +21,6 @@ curl-dev
 lcms2-dev
 json-glib-dev
 exiv2-dev
-lua-dev
 expat-dev
 pugixml-dev
 colord-dev
