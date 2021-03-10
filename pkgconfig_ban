@@ -1,7 +1,7 @@
 # This file contains pkgconfig build requirements that get picked up
 # but are undesirable. One entry per line, no whitespace.
-unity
-osmgpsmap-1.0
-libopenjp2
-GraphicsMagick
 GMIC
+GraphicsMagick
+libopenjp2
+osmgpsmap-1.0
+unity
