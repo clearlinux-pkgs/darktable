@@ -6,7 +6,7 @@
 #
 Name     : darktable
 Version  : 3.4.1
-Release  : 56
+Release  : 57
 URL      : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source1  : https://github.com/darktable-org/rawspeed/archive/v3.3.tar.gz
@@ -160,7 +160,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1618930574
+export SOURCE_DATE_EPOCH=1620081260
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -187,7 +187,7 @@ make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1618930574
+export SOURCE_DATE_EPOCH=1620081260
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/darktable
 cp %{_builddir}/darktable-3.4.1/LICENSE %{buildroot}/usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02
@@ -477,6 +477,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/libdarktable.so
 /usr/lib64/darktable/plugins/imageio/format/libcopy.so
 /usr/lib64/darktable/plugins/imageio/format/libexr.so
+/usr/lib64/darktable/plugins/imageio/format/libexr.so.avx2
 /usr/lib64/darktable/plugins/imageio/format/libjpeg.so
 /usr/lib64/darktable/plugins/imageio/format/libpdf.so
 /usr/lib64/darktable/plugins/imageio/format/libpdf.so.avx2
@@ -528,6 +529,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/libcolorcontrast.so
 /usr/lib64/darktable/plugins/libcolorcontrast.so.avx2
 /usr/lib64/darktable/plugins/libcolorcorrection.so
+/usr/lib64/darktable/plugins/libcolorcorrection.so.avx2
 /usr/lib64/darktable/plugins/libcolorin.so
 /usr/lib64/darktable/plugins/libcolorin.so.avx2
 /usr/lib64/darktable/plugins/libcolorize.so
@@ -669,6 +671,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/lighttable/libmodulegroups.so
 /usr/lib64/darktable/plugins/lighttable/libnavigation.so
 /usr/lib64/darktable/plugins/lighttable/libprint_settings.so
+/usr/lib64/darktable/plugins/lighttable/libprint_settings.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libratings.so
 /usr/lib64/darktable/plugins/lighttable/librecentcollect.so
 /usr/lib64/darktable/plugins/lighttable/libselect.so
