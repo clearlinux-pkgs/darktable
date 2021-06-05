@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Antonio Rojas <arojas@archlinux.org>
+Date: Sat, 24 Apr 2021 19:33:58 +0200
+Subject: [PATCH] Fix build with OpenEXR 3
+
+Try to find openexr 3 via the upstream cmake config first, and fall back to using our FindOpenEXR.cmake
+---
+ src/CMakeLists.txt | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 7bc5c06..70c915e 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -321,7 +321,12 @@ if(USE_CAMERA_SUPPORT)
+ endif(USE_CAMERA_SUPPORT)
+ 
+ if(USE_OPENEXR)
+-  find_package(OpenEXR)
++  find_package(OpenEXR 3.0 CONFIG)
++  if(TARGET OpenEXR::OpenEXR)
++    set(OpenEXR_LIBRARIES OpenEXR::OpenEXR)
++  else()
++    find_package(OpenEXR)
++  endif()
+   if(OpenEXR_FOUND)
+     include_directories(SYSTEM ${OpenEXR_INCLUDE_DIRS})
+     list(APPEND LIBS ${OpenEXR_LIBRARIES})

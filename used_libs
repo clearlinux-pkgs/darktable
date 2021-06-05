@@ -1,6 +1,6 @@
 ld-linux-x86-64.so.2
-libIex-2_5.so.25
-libIlmImf-2_5.so.25
+libIex-3_0.so.28
+libOpenEXR-3_0.so.28
 libX11.so.6
 libc.so.6
 libcairo.so.2

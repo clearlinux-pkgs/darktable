@@ -3,33 +3,11 @@ Use the compile default for fpmath
 while the intent is to be clever, it's generally better to use the compiler default.
 likewise for mtune=generic, gcc comes with a default -mtune, lets use it
 
---- darktable-2.2.5/src/CMakeLists.txt~	2017-05-28 14:22:21.000000000 +0000
-+++ darktable-2.2.5/src/CMakeLists.txt	2017-08-04 11:27:29.552367475 +0000
-@@ -413,10 +413,6 @@
-   set(CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELWITHDEBINFO} -O2")
-   set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3 -ffast-math -fno-finite-math-only")
-   if(CMAKE_COMPILER_IS_GNUCC)
--    if(BUILD_SSE2_CODEPATHS)
--      set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfpmath=sse")
--    endif()
--
-     set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0 -g3 -ggdb3")
-     set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fexpensive-optimizations")
-   else()
-@@ -427,10 +423,6 @@
-   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -O2")
-   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -ffast-math -fno-finite-math-only")
-   if(CMAKE_COMPILER_IS_GNUCXX)
--    if(BUILD_SSE2_CODEPATHS)
--      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpmath=sse")
--    endif()
--
-     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g3 -ggdb3")
-     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fexpensive-optimizations")
-   else()
---- darktable-2.2.5/cmake/march-mtune.cmake~	2017-05-28 14:22:21.000000000 +0000
-+++ darktable-2.2.5/cmake/march-mtune.cmake	2017-08-04 11:30:57.457929892 +0000
-@@ -13,19 +13,9 @@
+diff --git a/cmake/march-mtune.cmake b/cmake/march-mtune.cmake
+index f066c90..8400fa2 100644
+--- a/cmake/march-mtune.cmake
++++ b/cmake/march-mtune.cmake
+@@ -13,19 +13,9 @@ elseif(NOT BINARY_PACKAGE_BUILD AND (NOT APPLE OR CMAKE_C_COMPILER_ID STREQUAL "
      else()
        MESSAGE("-- Checking for -mtune=generic support")
        CHECK_C_COMPILER_FLAG("-mtune=generic" MTUNEGENERIC)
@@ -49,3 +27,29 @@ likewise for mtune=generic, gcc comes with a default -mtune, lets use it
 -    message(WARNING "Do not know which -march/-mtune to pass! Resulting binaries may be broken!")
 -  endif()
  endif()
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 63702af..70c915e 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -586,10 +586,6 @@ if(NOT CUSTOM_CFLAGS)
+   set(CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELWITHDEBINFO} -O2")
+   set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3")
+   if(CMAKE_COMPILER_IS_GNUCC)
+-    if(BUILD_SSE2_CODEPATHS)
+-      set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfpmath=sse")
+-    endif()
+-
+     set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0 -g3 -ggdb3")
+     set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fexpensive-optimizations")
+   else()
+@@ -600,10 +596,6 @@ if(NOT CUSTOM_CFLAGS)
+   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -O2")
+   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+   if(CMAKE_COMPILER_IS_GNUCXX)
+-    if(BUILD_SSE2_CODEPATHS)
+-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpmath=sse")
+-    endif()
+-
+     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g3 -ggdb3")
+     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fexpensive-optimizations")
+   else()

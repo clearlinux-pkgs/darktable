@@ -1,6 +1,8 @@
---- darktable-2.2.5/src/common/dynload.c~	2017-05-28 14:22:21.000000000 +0000
-+++ darktable-2.2.5/src/common/dynload.c	2017-08-04 12:26:09.762458898 +0000
-@@ -44,6 +44,7 @@
+diff --git a/src/common/dynload.c b/src/common/dynload.c
+index 3e4834c..412286a 100644
+--- a/src/common/dynload.c
++++ b/src/common/dynload.c
+@@ -46,6 +46,7 @@ dt_gmodule_t *dt_gmodule_open(const char *library)
    dt_gmodule_t *module = NULL;
    GModule *gmodule;
    char *name;
@@ -8,17 +10,17 @@
  
    if(strchr(library, '/') == NULL)
    {
-@@ -54,7 +55,12 @@
+@@ -56,7 +57,12 @@ dt_gmodule_t *dt_gmodule_open(const char *library)
      name = g_strdup(library);
    }
  
 -  gmodule = g_module_open(name, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
 +  gmodule = NULL;
 +  sprintf(name2, "%s.avx2", name);
-+  if (__builtin_cpu_supports("avx2"))
-+  	gmodule = g_module_open(name2, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
-+  if (!gmodule)
-+	  gmodule = g_module_open(name, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
++  if(__builtin_cpu_supports("avx2"))
++    gmodule = g_module_open(name2, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
++  if(!gmodule)
++    gmodule = g_module_open(name, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
  
    if(gmodule != NULL)
    {

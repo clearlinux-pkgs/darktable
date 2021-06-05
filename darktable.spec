@@ -6,7 +6,7 @@
 #
 Name     : darktable
 Version  : 3.4.1
-Release  : 57
+Release  : 58
 URL      : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source1  : https://github.com/darktable-org/rawspeed/archive/v3.3.tar.gz
@@ -78,6 +78,7 @@ BuildRequires : tiff-dev
 BuildRequires : zlib-dev
 Patch1: default-fpmath.patch
 Patch2: avx2-libs.patch
+Patch3: 0001-Fix-build-with-OpenEXR-3.patch
 
 %description
 darktable is a virtual lighttable and darkroom for photographers: it manages 
@@ -154,13 +155,14 @@ mkdir -p src/external/rawspeed
 cp -r %{_builddir}/rawspeed-3.3/* %{_builddir}/darktable-3.4.1/src/external/rawspeed
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1620081260
+export SOURCE_DATE_EPOCH=1622936713
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -187,7 +189,7 @@ make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1620081260
+export SOURCE_DATE_EPOCH=1622936713
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/darktable
 cp %{_builddir}/darktable-3.4.1/LICENSE %{buildroot}/usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02
@@ -595,7 +597,6 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/libnegadoctor.so.avx2
 /usr/lib64/darktable/plugins/libnlmeans.so
 /usr/lib64/darktable/plugins/liboverexposed.so
-/usr/lib64/darktable/plugins/liboverexposed.so.avx2
 /usr/lib64/darktable/plugins/libprofile_gamma.so
 /usr/lib64/darktable/plugins/libprofile_gamma.so.avx2
 /usr/lib64/darktable/plugins/librawdenoise.so
