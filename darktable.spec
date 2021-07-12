@@ -6,7 +6,7 @@
 #
 Name     : darktable
 Version  : 3.4.1
-Release  : 59
+Release  : 60
 URL      : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source1  : https://github.com/darktable-org/rawspeed/archive/v3.3.tar.gz
@@ -689,6 +689,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/views/libdarkroom.so.avx2
 /usr/lib64/darktable/views/libknight.so
 /usr/lib64/darktable/views/liblighttable.so
+/usr/lib64/darktable/views/liblighttable.so.avx2
 /usr/lib64/darktable/views/libprint.so
 /usr/lib64/darktable/views/libslideshow.so
 /usr/lib64/darktable/views/libtethering.so
