@@ -6,7 +6,7 @@
 #
 Name     : darktable
 Version  : 3.4.1
-Release  : 60
+Release  : 61
 URL      : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source1  : https://github.com/darktable-org/rawspeed/archive/v3.3.tar.gz
@@ -162,24 +162,24 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1622936713
+export SOURCE_DATE_EPOCH=1629130663
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$FFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CFLAGS="$CFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mprefer-vector-width=256 "
 %cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DDONT_USE_INTERNAL_LUA=Off -DBINARY_PACKAGE_BUILD=ON  -DRAWSPEED_ENABLE_LTO=ON
 make  %{?_smp_mflags}
 popd
 mkdir -p clr-build-avx2
 pushd clr-build-avx2
 export GCC_IGNORE_WERROR=1
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
-export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
-export FFLAGS="$FFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -march=haswell -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -march=haswell -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -march=haswell -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -march=haswell -mprefer-vector-width=256 "
 export CFLAGS="$CFLAGS -march=haswell -m64"
 export CXXFLAGS="$CXXFLAGS -march=haswell -m64"
 export FFLAGS="$FFLAGS -march=haswell -m64"
@@ -189,7 +189,7 @@ make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1622936713
+export SOURCE_DATE_EPOCH=1629130663
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/darktable
 cp %{_builddir}/darktable-3.4.1/LICENSE %{buildroot}/usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02
@@ -494,9 +494,12 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/imageio/format/libxcf.so.avx2
 /usr/lib64/darktable/plugins/imageio/storage/libdisk.so
 /usr/lib64/darktable/plugins/imageio/storage/libemail.so
+/usr/lib64/darktable/plugins/imageio/storage/libemail.so.avx2
 /usr/lib64/darktable/plugins/imageio/storage/libgallery.so
+/usr/lib64/darktable/plugins/imageio/storage/libgallery.so.avx2
 /usr/lib64/darktable/plugins/imageio/storage/liblatex.so
 /usr/lib64/darktable/plugins/imageio/storage/libpiwigo.so
+/usr/lib64/darktable/plugins/imageio/storage/libpiwigo.so.avx2
 /usr/lib64/darktable/plugins/libashift.so
 /usr/lib64/darktable/plugins/libashift.so.avx2
 /usr/lib64/darktable/plugins/libatrous.so
@@ -506,6 +509,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/libbasicadj.so
 /usr/lib64/darktable/plugins/libbasicadj.so.avx2
 /usr/lib64/darktable/plugins/libbilat.so
+/usr/lib64/darktable/plugins/libbilat.so.avx2
 /usr/lib64/darktable/plugins/libbilateral.so
 /usr/lib64/darktable/plugins/libbilateral.so.avx2
 /usr/lib64/darktable/plugins/libbloom.so
@@ -570,7 +574,6 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/libgrain.so
 /usr/lib64/darktable/plugins/libgrain.so.avx2
 /usr/lib64/darktable/plugins/libhazeremoval.so
-/usr/lib64/darktable/plugins/libhazeremoval.so.avx2
 /usr/lib64/darktable/plugins/libhighlights.so
 /usr/lib64/darktable/plugins/libhighlights.so.avx2
 /usr/lib64/darktable/plugins/libhighpass.so
@@ -592,10 +595,10 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/liblut3d.so.avx2
 /usr/lib64/darktable/plugins/libmask_manager.so
 /usr/lib64/darktable/plugins/libmonochrome.so
-/usr/lib64/darktable/plugins/libmonochrome.so.avx2
 /usr/lib64/darktable/plugins/libnegadoctor.so
 /usr/lib64/darktable/plugins/libnegadoctor.so.avx2
 /usr/lib64/darktable/plugins/libnlmeans.so
+/usr/lib64/darktable/plugins/libnlmeans.so.avx2
 /usr/lib64/darktable/plugins/liboverexposed.so
 /usr/lib64/darktable/plugins/libprofile_gamma.so
 /usr/lib64/darktable/plugins/libprofile_gamma.so.avx2
@@ -611,6 +614,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/librgbcurve.so
 /usr/lib64/darktable/plugins/librgbcurve.so.avx2
 /usr/lib64/darktable/plugins/librgblevels.so
+/usr/lib64/darktable/plugins/librgblevels.so.avx2
 /usr/lib64/darktable/plugins/librotatepixels.so
 /usr/lib64/darktable/plugins/librotatepixels.so.avx2
 /usr/lib64/darktable/plugins/libscalepixels.so
@@ -633,7 +637,6 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/libtonemap.so
 /usr/lib64/darktable/plugins/libtonemap.so.avx2
 /usr/lib64/darktable/plugins/libvelvia.so
-/usr/lib64/darktable/plugins/libvelvia.so.avx2
 /usr/lib64/darktable/plugins/libvibrance.so
 /usr/lib64/darktable/plugins/libvignette.so
 /usr/lib64/darktable/plugins/libwatermark.so
@@ -642,6 +645,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/libzonesystem.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libbackgroundjobs.so
 /usr/lib64/darktable/plugins/lighttable/libcamera.so
+/usr/lib64/darktable/plugins/lighttable/libcamera.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libcollect.so
 /usr/lib64/darktable/plugins/lighttable/libcollect.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libcolorlabels.so
@@ -651,6 +655,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/lighttable/libdarktable_label.so
 /usr/lib64/darktable/plugins/lighttable/libduplicate.so
 /usr/lib64/darktable/plugins/lighttable/libexport.so
+/usr/lib64/darktable/plugins/lighttable/libexport.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libfilmstrip.so
 /usr/lib64/darktable/plugins/lighttable/libfilter.so
 /usr/lib64/darktable/plugins/lighttable/libgeotagging.so
@@ -661,13 +666,17 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/lighttable/libhistory.so
 /usr/lib64/darktable/plugins/lighttable/libimage.so
 /usr/lib64/darktable/plugins/lighttable/libimage_infos.so
+/usr/lib64/darktable/plugins/lighttable/libimage_infos.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libimport.so
+/usr/lib64/darktable/plugins/lighttable/libimport.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libioporder.so
 /usr/lib64/darktable/plugins/lighttable/liblighttable_mode.so
 /usr/lib64/darktable/plugins/lighttable/liblive_view.so
 /usr/lib64/darktable/plugins/lighttable/libmasks.so
+/usr/lib64/darktable/plugins/lighttable/libmasks.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libmetadata.so
 /usr/lib64/darktable/plugins/lighttable/libmetadata_view.so
+/usr/lib64/darktable/plugins/lighttable/libmetadata_view.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libmodule_toolbox.so
 /usr/lib64/darktable/plugins/lighttable/libmodulegroups.so
 /usr/lib64/darktable/plugins/lighttable/libnavigation.so
@@ -675,12 +684,14 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/plugins/lighttable/libprint_settings.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libratings.so
 /usr/lib64/darktable/plugins/lighttable/librecentcollect.so
+/usr/lib64/darktable/plugins/lighttable/librecentcollect.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libselect.so
 /usr/lib64/darktable/plugins/lighttable/libsession.so
 /usr/lib64/darktable/plugins/lighttable/libsnapshots.so
 /usr/lib64/darktable/plugins/lighttable/libsnapshots.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libstyles.so
 /usr/lib64/darktable/plugins/lighttable/libtagging.so
+/usr/lib64/darktable/plugins/lighttable/libtagging.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libtimeline.so
 /usr/lib64/darktable/plugins/lighttable/libtimeline.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libview_toolbox.so
