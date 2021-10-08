@@ -6,7 +6,7 @@
 #
 Name     : darktable
 Version  : 3.4.1
-Release  : 61
+Release  : 64
 URL      : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source1  : https://github.com/darktable-org/rawspeed/archive/v3.3.tar.gz
@@ -16,6 +16,7 @@ Group    : Development/Tools
 License  : BSD-2-Clause-FreeBSD GPL-3.0 GPL-3.0+ LGPL-2.1 MIT WTFPL
 Requires: darktable-bin = %{version}-%{release}
 Requires: darktable-data = %{version}-%{release}
+Requires: darktable-filemap = %{version}-%{release}
 Requires: darktable-lib = %{version}-%{release}
 Requires: darktable-license = %{version}-%{release}
 Requires: darktable-locales = %{version}-%{release}
@@ -77,8 +78,7 @@ BuildRequires : sqlite-autoconf-dev
 BuildRequires : tiff-dev
 BuildRequires : zlib-dev
 Patch1: default-fpmath.patch
-Patch2: avx2-libs.patch
-Patch3: 0001-Fix-build-with-OpenEXR-3.patch
+Patch2: 0001-Fix-build-with-OpenEXR-3.patch
 
 %description
 darktable is a virtual lighttable and darkroom for photographers: it manages 
@@ -90,6 +90,7 @@ Summary: bin components for the darktable package.
 Group: Binaries
 Requires: darktable-data = %{version}-%{release}
 Requires: darktable-license = %{version}-%{release}
+Requires: darktable-filemap = %{version}-%{release}
 
 %description bin
 bin components for the darktable package.
@@ -112,11 +113,20 @@ Requires: darktable-man = %{version}-%{release}
 doc components for the darktable package.
 
 
+%package filemap
+Summary: filemap components for the darktable package.
+Group: Default
+
+%description filemap
+filemap components for the darktable package.
+
+
 %package lib
 Summary: lib components for the darktable package.
 Group: Libraries
 Requires: darktable-data = %{version}-%{release}
 Requires: darktable-license = %{version}-%{release}
+Requires: darktable-filemap = %{version}-%{release}
 
 %description lib
 lib components for the darktable package.
@@ -155,14 +165,13 @@ mkdir -p src/external/rawspeed
 cp -r %{_builddir}/rawspeed-3.3/* %{_builddir}/darktable-3.4.1/src/external/rawspeed
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1629130663
+export SOURCE_DATE_EPOCH=1633712921
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -176,20 +185,20 @@ popd
 mkdir -p clr-build-avx2
 pushd clr-build-avx2
 export GCC_IGNORE_WERROR=1
-export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -march=haswell -mprefer-vector-width=256 "
-export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -march=haswell -mprefer-vector-width=256 "
-export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -march=haswell -mprefer-vector-width=256 "
-export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -march=haswell -mprefer-vector-width=256 "
-export CFLAGS="$CFLAGS -march=haswell -m64"
-export CXXFLAGS="$CXXFLAGS -march=haswell -m64"
-export FFLAGS="$FFLAGS -march=haswell -m64"
-export FCFLAGS="$FCFLAGS -march=haswell -m64"
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -march=x86-64-v3 -mprefer-vector-width=256 -mtune=skylake "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -march=x86-64-v3 -mprefer-vector-width=256 -mtune=skylake "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -march=x86-64-v3 -mprefer-vector-width=256 -mtune=skylake "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -march=x86-64-v3 -mprefer-vector-width=256 -mtune=skylake "
+export CFLAGS="$CFLAGS -march=x86-64-v3 -m64"
+export CXXFLAGS="$CXXFLAGS -march=x86-64-v3 -m64"
+export FFLAGS="$FFLAGS -march=x86-64-v3 -m64"
+export FCFLAGS="$FCFLAGS -march=x86-64-v3 -m64"
 %cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DDONT_USE_INTERNAL_LUA=Off -DBINARY_PACKAGE_BUILD=ON  -DRAWSPEED_ENABLE_LTO=ON
 make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1629130663
+export SOURCE_DATE_EPOCH=1633712921
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/darktable
 cp %{_builddir}/darktable-3.4.1/LICENSE %{buildroot}/usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02
@@ -202,27 +211,14 @@ cp %{_builddir}/darktable-3.4.1/src/external/whereami/LICENSE.MIT %{buildroot}/u
 cp %{_builddir}/darktable-3.4.1/src/external/whereami/LICENSE.WTFPLv2 %{buildroot}/usr/share/package-licenses/darktable/75e5bae837deb898dae4cb65c4890b1ab825c6b6
 cp %{_builddir}/rawspeed-3.3/LICENSE %{buildroot}/usr/share/package-licenses/darktable/3704f4680301a60004b20f94e0b5b8c7ff1484a9
 pushd clr-build-avx2
-%make_install_avx2  || :
+%make_install_v3  || :
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/clear/optimized-elf/ %{buildroot}/usr/clear/filemap/filemap-%{name}
 popd
 pushd clr-build
 %make_install
 popd
 %find_lang darktable
 ## install_append content
-#for i in %{buildroot}/usr/lib64/haswell/darktable/*.so; do mv $i $i.avx2 ; done
-#mv %{buildroot}/usr/lib64/haswell/darktable/*.so.avx2 %{buildroot}/usr/lib64/darktable/
-
-#for i in %{buildroot}/usr/lib64/haswell/darktable/plugins/*.so; do mv $i $i.avx2 ; done
-#mv %{buildroot}/usr/lib64/haswell/darktable/plugins/*.so.avx2 %{buildroot}/usr/lib64/darktable/plugins/
-
-
-#for i in %{buildroot}/usr/lib64/haswell/darktable/plugins/lighttable/*.so; do mv $i $i.avx2 ; done
-#mv %{buildroot}/usr/lib64/haswell/darktable/plugins/lighttable/*.so.avx2 %{buildroot}/usr/lib64/darktable/plugins/lighttable/
-
-
-#for i in %{buildroot}/usr/lib64/haswell/darktable/views/*.so; do mv $i $i.avx2 ; done
-#mv %{buildroot}/usr/lib64/haswell/darktable/views/*.so.avx2 %{buildroot}/usr/lib64/darktable/views/
-
 
 ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 ## install_append end
@@ -239,13 +235,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/bin/darktable-cmstest
 /usr/bin/darktable-generate-cache
 /usr/bin/darktable-rs-identify
-/usr/bin/haswell/darktable
-/usr/bin/haswell/darktable-chart
-/usr/bin/haswell/darktable-cli
-/usr/bin/haswell/darktable-cltest
-/usr/bin/haswell/darktable-cmstest
-/usr/bin/haswell/darktable-generate-cache
-/usr/bin/haswell/darktable-rs-identify
+/usr/clear/optimized-elf/bin*
 
 %files data
 %defattr(-,root,root,-)
@@ -473,238 +463,153 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 %defattr(0644,root,root,0755)
 %doc /usr/share/doc/darktable/*
 
+%files filemap
+%defattr(-,root,root,-)
+/usr/clear/filemap/filemap-darktable
+
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/darktable/haswell/libdarktable.so
+/usr/clear/optimized-elf/lib*
 /usr/lib64/darktable/libdarktable.so
 /usr/lib64/darktable/plugins/imageio/format/libcopy.so
 /usr/lib64/darktable/plugins/imageio/format/libexr.so
-/usr/lib64/darktable/plugins/imageio/format/libexr.so.avx2
 /usr/lib64/darktable/plugins/imageio/format/libjpeg.so
 /usr/lib64/darktable/plugins/imageio/format/libpdf.so
-/usr/lib64/darktable/plugins/imageio/format/libpdf.so.avx2
 /usr/lib64/darktable/plugins/imageio/format/libpfm.so
 /usr/lib64/darktable/plugins/imageio/format/libpng.so
-/usr/lib64/darktable/plugins/imageio/format/libpng.so.avx2
 /usr/lib64/darktable/plugins/imageio/format/libppm.so
 /usr/lib64/darktable/plugins/imageio/format/libtiff.so
-/usr/lib64/darktable/plugins/imageio/format/libtiff.so.avx2
 /usr/lib64/darktable/plugins/imageio/format/libwebp.so
 /usr/lib64/darktable/plugins/imageio/format/libxcf.so
-/usr/lib64/darktable/plugins/imageio/format/libxcf.so.avx2
 /usr/lib64/darktable/plugins/imageio/storage/libdisk.so
 /usr/lib64/darktable/plugins/imageio/storage/libemail.so
-/usr/lib64/darktable/plugins/imageio/storage/libemail.so.avx2
 /usr/lib64/darktable/plugins/imageio/storage/libgallery.so
-/usr/lib64/darktable/plugins/imageio/storage/libgallery.so.avx2
 /usr/lib64/darktable/plugins/imageio/storage/liblatex.so
 /usr/lib64/darktable/plugins/imageio/storage/libpiwigo.so
-/usr/lib64/darktable/plugins/imageio/storage/libpiwigo.so.avx2
 /usr/lib64/darktable/plugins/libashift.so
-/usr/lib64/darktable/plugins/libashift.so.avx2
 /usr/lib64/darktable/plugins/libatrous.so
-/usr/lib64/darktable/plugins/libatrous.so.avx2
 /usr/lib64/darktable/plugins/libbasecurve.so
-/usr/lib64/darktable/plugins/libbasecurve.so.avx2
 /usr/lib64/darktable/plugins/libbasicadj.so
-/usr/lib64/darktable/plugins/libbasicadj.so.avx2
 /usr/lib64/darktable/plugins/libbilat.so
-/usr/lib64/darktable/plugins/libbilat.so.avx2
 /usr/lib64/darktable/plugins/libbilateral.so
-/usr/lib64/darktable/plugins/libbilateral.so.avx2
 /usr/lib64/darktable/plugins/libbloom.so
-/usr/lib64/darktable/plugins/libbloom.so.avx2
 /usr/lib64/darktable/plugins/libborders.so
-/usr/lib64/darktable/plugins/libborders.so.avx2
 /usr/lib64/darktable/plugins/libcacorrect.so
-/usr/lib64/darktable/plugins/libcacorrect.so.avx2
 /usr/lib64/darktable/plugins/libchannelmixer.so
-/usr/lib64/darktable/plugins/libchannelmixer.so.avx2
 /usr/lib64/darktable/plugins/libchannelmixerrgb.so
-/usr/lib64/darktable/plugins/libchannelmixerrgb.so.avx2
 /usr/lib64/darktable/plugins/libclahe.so
-/usr/lib64/darktable/plugins/libclahe.so.avx2
 /usr/lib64/darktable/plugins/libclipping.so
-/usr/lib64/darktable/plugins/libclipping.so.avx2
 /usr/lib64/darktable/plugins/libcolisa.so
-/usr/lib64/darktable/plugins/libcolisa.so.avx2
 /usr/lib64/darktable/plugins/libcolorbalance.so
-/usr/lib64/darktable/plugins/libcolorbalance.so.avx2
 /usr/lib64/darktable/plugins/libcolorchecker.so
-/usr/lib64/darktable/plugins/libcolorchecker.so.avx2
 /usr/lib64/darktable/plugins/libcolorcontrast.so
-/usr/lib64/darktable/plugins/libcolorcontrast.so.avx2
 /usr/lib64/darktable/plugins/libcolorcorrection.so
-/usr/lib64/darktable/plugins/libcolorcorrection.so.avx2
 /usr/lib64/darktable/plugins/libcolorin.so
-/usr/lib64/darktable/plugins/libcolorin.so.avx2
 /usr/lib64/darktable/plugins/libcolorize.so
 /usr/lib64/darktable/plugins/libcolormapping.so
-/usr/lib64/darktable/plugins/libcolormapping.so.avx2
 /usr/lib64/darktable/plugins/libcolorout.so
-/usr/lib64/darktable/plugins/libcolorout.so.avx2
 /usr/lib64/darktable/plugins/libcolorreconstruct.so
 /usr/lib64/darktable/plugins/libcolortransfer.so
-/usr/lib64/darktable/plugins/libcolortransfer.so.avx2
 /usr/lib64/darktable/plugins/libcolorzones.so
-/usr/lib64/darktable/plugins/libcolorzones.so.avx2
 /usr/lib64/darktable/plugins/libdefringe.so
-/usr/lib64/darktable/plugins/libdefringe.so.avx2
 /usr/lib64/darktable/plugins/libdemosaic.so
-/usr/lib64/darktable/plugins/libdemosaic.so.avx2
 /usr/lib64/darktable/plugins/libdenoiseprofile.so
-/usr/lib64/darktable/plugins/libdenoiseprofile.so.avx2
 /usr/lib64/darktable/plugins/libdither.so
-/usr/lib64/darktable/plugins/libdither.so.avx2
 /usr/lib64/darktable/plugins/libequalizer.so
-/usr/lib64/darktable/plugins/libequalizer.so.avx2
 /usr/lib64/darktable/plugins/libexposure.so
-/usr/lib64/darktable/plugins/libexposure.so.avx2
 /usr/lib64/darktable/plugins/libfilmic.so
-/usr/lib64/darktable/plugins/libfilmic.so.avx2
 /usr/lib64/darktable/plugins/libfilmicrgb.so
-/usr/lib64/darktable/plugins/libfilmicrgb.so.avx2
 /usr/lib64/darktable/plugins/libfinalscale.so
 /usr/lib64/darktable/plugins/libflip.so
-/usr/lib64/darktable/plugins/libflip.so.avx2
 /usr/lib64/darktable/plugins/libgamma.so
 /usr/lib64/darktable/plugins/libglobaltonemap.so
 /usr/lib64/darktable/plugins/libgraduatednd.so
-/usr/lib64/darktable/plugins/libgraduatednd.so.avx2
 /usr/lib64/darktable/plugins/libgrain.so
-/usr/lib64/darktable/plugins/libgrain.so.avx2
 /usr/lib64/darktable/plugins/libhazeremoval.so
 /usr/lib64/darktable/plugins/libhighlights.so
-/usr/lib64/darktable/plugins/libhighlights.so.avx2
 /usr/lib64/darktable/plugins/libhighpass.so
-/usr/lib64/darktable/plugins/libhighpass.so.avx2
 /usr/lib64/darktable/plugins/libhotpixels.so
-/usr/lib64/darktable/plugins/libhotpixels.so.avx2
 /usr/lib64/darktable/plugins/libinvert.so
-/usr/lib64/darktable/plugins/libinvert.so.avx2
 /usr/lib64/darktable/plugins/liblens.so
-/usr/lib64/darktable/plugins/liblens.so.avx2
 /usr/lib64/darktable/plugins/liblevels.so
 /usr/lib64/darktable/plugins/libliquify.so
-/usr/lib64/darktable/plugins/libliquify.so.avx2
 /usr/lib64/darktable/plugins/liblowlight.so
-/usr/lib64/darktable/plugins/liblowlight.so.avx2
 /usr/lib64/darktable/plugins/liblowpass.so
-/usr/lib64/darktable/plugins/liblowpass.so.avx2
 /usr/lib64/darktable/plugins/liblut3d.so
-/usr/lib64/darktable/plugins/liblut3d.so.avx2
 /usr/lib64/darktable/plugins/libmask_manager.so
 /usr/lib64/darktable/plugins/libmonochrome.so
 /usr/lib64/darktable/plugins/libnegadoctor.so
-/usr/lib64/darktable/plugins/libnegadoctor.so.avx2
 /usr/lib64/darktable/plugins/libnlmeans.so
-/usr/lib64/darktable/plugins/libnlmeans.so.avx2
 /usr/lib64/darktable/plugins/liboverexposed.so
 /usr/lib64/darktable/plugins/libprofile_gamma.so
-/usr/lib64/darktable/plugins/libprofile_gamma.so.avx2
 /usr/lib64/darktable/plugins/librawdenoise.so
-/usr/lib64/darktable/plugins/librawdenoise.so.avx2
 /usr/lib64/darktable/plugins/librawoverexposed.so
-/usr/lib64/darktable/plugins/librawoverexposed.so.avx2
 /usr/lib64/darktable/plugins/librawprepare.so
-/usr/lib64/darktable/plugins/librawprepare.so.avx2
 /usr/lib64/darktable/plugins/librelight.so
 /usr/lib64/darktable/plugins/libretouch.so
-/usr/lib64/darktable/plugins/libretouch.so.avx2
 /usr/lib64/darktable/plugins/librgbcurve.so
-/usr/lib64/darktable/plugins/librgbcurve.so.avx2
 /usr/lib64/darktable/plugins/librgblevels.so
-/usr/lib64/darktable/plugins/librgblevels.so.avx2
 /usr/lib64/darktable/plugins/librotatepixels.so
-/usr/lib64/darktable/plugins/librotatepixels.so.avx2
 /usr/lib64/darktable/plugins/libscalepixels.so
-/usr/lib64/darktable/plugins/libscalepixels.so.avx2
 /usr/lib64/darktable/plugins/libshadhi.so
-/usr/lib64/darktable/plugins/libshadhi.so.avx2
 /usr/lib64/darktable/plugins/libsharpen.so
-/usr/lib64/darktable/plugins/libsharpen.so.avx2
 /usr/lib64/darktable/plugins/libsoften.so
-/usr/lib64/darktable/plugins/libsoften.so.avx2
 /usr/lib64/darktable/plugins/libsplittoning.so
 /usr/lib64/darktable/plugins/libspots.so
-/usr/lib64/darktable/plugins/libspots.so.avx2
 /usr/lib64/darktable/plugins/libtemperature.so
-/usr/lib64/darktable/plugins/libtemperature.so.avx2
 /usr/lib64/darktable/plugins/libtonecurve.so
-/usr/lib64/darktable/plugins/libtonecurve.so.avx2
 /usr/lib64/darktable/plugins/libtoneequal.so
-/usr/lib64/darktable/plugins/libtoneequal.so.avx2
 /usr/lib64/darktable/plugins/libtonemap.so
-/usr/lib64/darktable/plugins/libtonemap.so.avx2
 /usr/lib64/darktable/plugins/libvelvia.so
 /usr/lib64/darktable/plugins/libvibrance.so
 /usr/lib64/darktable/plugins/libvignette.so
 /usr/lib64/darktable/plugins/libwatermark.so
-/usr/lib64/darktable/plugins/libwatermark.so.avx2
 /usr/lib64/darktable/plugins/libzonesystem.so
-/usr/lib64/darktable/plugins/libzonesystem.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libbackgroundjobs.so
 /usr/lib64/darktable/plugins/lighttable/libcamera.so
-/usr/lib64/darktable/plugins/lighttable/libcamera.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libcollect.so
-/usr/lib64/darktable/plugins/lighttable/libcollect.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libcolorlabels.so
 /usr/lib64/darktable/plugins/lighttable/libcolorpicker.so
-/usr/lib64/darktable/plugins/lighttable/libcolorpicker.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libcopy_history.so
 /usr/lib64/darktable/plugins/lighttable/libdarktable_label.so
 /usr/lib64/darktable/plugins/lighttable/libduplicate.so
 /usr/lib64/darktable/plugins/lighttable/libexport.so
-/usr/lib64/darktable/plugins/lighttable/libexport.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libfilmstrip.so
 /usr/lib64/darktable/plugins/lighttable/libfilter.so
 /usr/lib64/darktable/plugins/lighttable/libgeotagging.so
 /usr/lib64/darktable/plugins/lighttable/libglobal_toolbox.so
 /usr/lib64/darktable/plugins/lighttable/libhinter.so
 /usr/lib64/darktable/plugins/lighttable/libhistogram.so
-/usr/lib64/darktable/plugins/lighttable/libhistogram.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libhistory.so
 /usr/lib64/darktable/plugins/lighttable/libimage.so
 /usr/lib64/darktable/plugins/lighttable/libimage_infos.so
-/usr/lib64/darktable/plugins/lighttable/libimage_infos.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libimport.so
-/usr/lib64/darktable/plugins/lighttable/libimport.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libioporder.so
 /usr/lib64/darktable/plugins/lighttable/liblighttable_mode.so
 /usr/lib64/darktable/plugins/lighttable/liblive_view.so
 /usr/lib64/darktable/plugins/lighttable/libmasks.so
-/usr/lib64/darktable/plugins/lighttable/libmasks.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libmetadata.so
 /usr/lib64/darktable/plugins/lighttable/libmetadata_view.so
-/usr/lib64/darktable/plugins/lighttable/libmetadata_view.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libmodule_toolbox.so
 /usr/lib64/darktable/plugins/lighttable/libmodulegroups.so
 /usr/lib64/darktable/plugins/lighttable/libnavigation.so
 /usr/lib64/darktable/plugins/lighttable/libprint_settings.so
-/usr/lib64/darktable/plugins/lighttable/libprint_settings.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libratings.so
 /usr/lib64/darktable/plugins/lighttable/librecentcollect.so
-/usr/lib64/darktable/plugins/lighttable/librecentcollect.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libselect.so
 /usr/lib64/darktable/plugins/lighttable/libsession.so
 /usr/lib64/darktable/plugins/lighttable/libsnapshots.so
-/usr/lib64/darktable/plugins/lighttable/libsnapshots.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libstyles.so
 /usr/lib64/darktable/plugins/lighttable/libtagging.so
-/usr/lib64/darktable/plugins/lighttable/libtagging.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libtimeline.so
-/usr/lib64/darktable/plugins/lighttable/libtimeline.so.avx2
 /usr/lib64/darktable/plugins/lighttable/libview_toolbox.so
 /usr/lib64/darktable/plugins/lighttable/libviewswitcher.so
 /usr/lib64/darktable/views/libdarkroom.so
-/usr/lib64/darktable/views/libdarkroom.so.avx2
 /usr/lib64/darktable/views/libknight.so
 /usr/lib64/darktable/views/liblighttable.so
-/usr/lib64/darktable/views/liblighttable.so.avx2
 /usr/lib64/darktable/views/libprint.so
 /usr/lib64/darktable/views/libslideshow.so
 /usr/lib64/darktable/views/libtethering.so
-/usr/lib64/darktable/views/libtethering.so.avx2
 /usr/lib64/libdarktable.so
 
 %files license
