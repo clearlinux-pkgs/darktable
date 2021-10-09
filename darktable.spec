@@ -6,7 +6,7 @@
 #
 Name     : darktable
 Version  : 3.4.1
-Release  : 64
+Release  : 65
 URL      : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source1  : https://github.com/darktable-org/rawspeed/archive/v3.3.tar.gz
@@ -171,7 +171,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1633712921
+export SOURCE_DATE_EPOCH=1633739542
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -198,7 +198,7 @@ make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1633712921
+export SOURCE_DATE_EPOCH=1633739542
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/darktable
 cp %{_builddir}/darktable-3.4.1/LICENSE %{buildroot}/usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02
@@ -212,7 +212,7 @@ cp %{_builddir}/darktable-3.4.1/src/external/whereami/LICENSE.WTFPLv2 %{buildroo
 cp %{_builddir}/rawspeed-3.3/LICENSE %{buildroot}/usr/share/package-licenses/darktable/3704f4680301a60004b20f94e0b5b8c7ff1484a9
 pushd clr-build-avx2
 %make_install_v3  || :
-/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/clear/optimized-elf/ %{buildroot}/usr/clear/filemap/filemap-%{name}
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 popd
 pushd clr-build
 %make_install
@@ -235,7 +235,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/bin/darktable-cmstest
 /usr/bin/darktable-generate-cache
 /usr/bin/darktable-rs-identify
-/usr/clear/optimized-elf/bin*
+/usr/share/clear/optimized-elf/bin*
 
 %files data
 %defattr(-,root,root,-)
@@ -465,11 +465,10 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 
 %files filemap
 %defattr(-,root,root,-)
-/usr/clear/filemap/filemap-darktable
+/usr/share/clear/filemap/filemap-darktable
 
 %files lib
 %defattr(-,root,root,-)
-/usr/clear/optimized-elf/lib*
 /usr/lib64/darktable/libdarktable.so
 /usr/lib64/darktable/plugins/imageio/format/libcopy.so
 /usr/lib64/darktable/plugins/imageio/format/libexr.so
@@ -611,6 +610,7 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/views/libslideshow.so
 /usr/lib64/darktable/views/libtethering.so
 /usr/lib64/libdarktable.so
+/usr/share/clear/optimized-elf/lib*
 
 %files license
 %defattr(0644,root,root,0755)
