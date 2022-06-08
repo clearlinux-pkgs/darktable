@@ -1,7 +1,8 @@
 ld-linux-x86-64.so.2
-libIex-3_0.so.29
-libOpenEXR-3_0.so.29
+libIex-3_1.so.30
+libOpenEXR-3_1.so.30
 libX11.so.6
+libavif.so.10
 libc.so.6
 libcairo.so.2
 libcolord-gtk.so.1
