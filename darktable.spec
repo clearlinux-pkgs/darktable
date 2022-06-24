@@ -6,7 +6,7 @@
 #
 Name     : darktable
 Version  : 3.4.1
-Release  : 71
+Release  : 72
 URL      : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source1  : https://github.com/darktable-org/rawspeed/archive/v3.3.tar.gz
@@ -171,7 +171,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1656018557
+export SOURCE_DATE_EPOCH=1656100647
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -198,7 +198,7 @@ make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1656018557
+export SOURCE_DATE_EPOCH=1656100647
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/darktable
 cp %{_builddir}/darktable-3.4.1/LICENSE %{buildroot}/usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02
@@ -610,147 +610,6 @@ ln -s darktable/libdarktable.so %{buildroot}/usr/lib64/libdarktable.so
 /usr/lib64/darktable/views/libprint.so
 /usr/lib64/darktable/views/libslideshow.so
 /usr/lib64/darktable/views/libtethering.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libashift.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libatrous.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libavif.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libbackgroundjobs.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libbasecurve.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libbasicadj.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libbilat.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libbilateral.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libbloom.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libborders.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcacorrect.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcamera.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libchannelmixer.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libchannelmixerrgb.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libclahe.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libclipping.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcolisa.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcollect.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcolorbalance.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcolorchecker.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcolorcontrast.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcolorcorrection.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcolorin.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcolorize.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcolorlabels.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcolormapping.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcolorout.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcolorpicker.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcolorreconstruct.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcolortransfer.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcolorzones.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcopy.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libcopy_history.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libdarkroom.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libdarktable.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libdarktable_label.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libdefringe.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libdemosaic.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libdenoiseprofile.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libdisk.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libdither.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libduplicate.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libemail.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libequalizer.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libexport.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libexposure.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libexr.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libfilmic.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libfilmicrgb.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libfilmstrip.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libfilter.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libfinalscale.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libflip.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libgallery.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libgamma.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libgeotagging.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libglobal_toolbox.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libglobaltonemap.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libgraduatednd.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libgrain.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libhazeremoval.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libhighlights.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libhighpass.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libhinter.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libhistogram.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libhistory.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libhotpixels.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libimage.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libimage_infos.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libimport.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libinvert.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libioporder.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libjpeg.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libknight.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/liblatex.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/liblens.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/liblevels.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/liblighttable.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/liblighttable_mode.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libliquify.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/liblive_view.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/liblowlight.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/liblowpass.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/liblut3d.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libmask_manager.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libmasks.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libmetadata.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libmetadata_view.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libmodule_toolbox.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libmodulegroups.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libmonochrome.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libnavigation.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libnegadoctor.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libnlmeans.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/liboverexposed.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libpdf.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libpfm.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libpiwigo.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libpng.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libppm.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libprint.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libprint_settings.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libprofile_gamma.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libratings.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/librawdenoise.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/librawoverexposed.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/librawprepare.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/librecentcollect.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/librelight.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libretouch.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/librgbcurve.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/librgblevels.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/librotatepixels.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libscalepixels.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libselect.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libsession.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libshadhi.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libsharpen.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libslideshow.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libsnapshots.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libsoften.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libsplittoning.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libspots.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libstyles.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libtagging.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libtemperature.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libtethering.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libtiff.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libtimeline.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libtonecurve.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libtoneequal.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libtonemap.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libvelvia.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libvibrance.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libview_toolbox.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libviewswitcher.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libvignette.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libwatermark.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libwebp.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libxcf.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libzonesystem.so
 /usr/lib64/libdarktable.so
 
 %files license
