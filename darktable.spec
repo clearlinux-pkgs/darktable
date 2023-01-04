@@ -6,7 +6,7 @@
 #
 Name     : darktable
 Version  : 3.4.1
-Release  : 77
+Release  : 78
 URL      : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-3.4.1/darktable-3.4.1.tar.xz
 Source1  : https://github.com/darktable-org/rawspeed/archive/v3.3.tar.gz
@@ -77,6 +77,9 @@ BuildRequires : pugixml-dev
 BuildRequires : sqlite-autoconf-dev
 BuildRequires : tiff-dev
 BuildRequires : zlib-dev
+# Suppress stripping binaries
+%define __strip /bin/true
+%define debug_package %{nil}
 Patch1: default-fpmath.patch
 Patch2: 0001-Fix-build-with-OpenEXR-3.patch
 
@@ -171,24 +174,24 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1656100647
+export SOURCE_DATE_EPOCH=1672863876
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
-export CFLAGS="$CFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mprefer-vector-width=256 "
-export FCFLAGS="$FFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mprefer-vector-width=256 "
-export FFLAGS="$FFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mprefer-vector-width=256 "
-export CXXFLAGS="$CXXFLAGS -Ofast -falign-functions=32 -fno-lto -fno-semantic-interposition -mprefer-vector-width=256 "
+export CFLAGS="$CFLAGS -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz "
+export FCFLAGS="$FFLAGS -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz "
+export FFLAGS="$FFLAGS -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz "
+export CXXFLAGS="$CXXFLAGS -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz "
 %cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DDONT_USE_INTERNAL_LUA=Off -DBINARY_PACKAGE_BUILD=ON  -DRAWSPEED_ENABLE_LTO=ON
 make  %{?_smp_mflags}
 popd
 mkdir -p clr-build-avx2
 pushd clr-build-avx2
 export GCC_IGNORE_WERROR=1
-export CFLAGS="$CFLAGS -O3 -Ofast -Wl,-z,x86-64-v3 -falign-functions=32 -fno-lto -fno-semantic-interposition -march=x86-64-v3 -mprefer-vector-width=256 -msse2avx -mtune=skylake "
-export FCFLAGS="$FFLAGS -O3 -Ofast -Wl,-z,x86-64-v3 -falign-functions=32 -fno-lto -fno-semantic-interposition -march=x86-64-v3 -mprefer-vector-width=256 -msse2avx -mtune=skylake "
-export FFLAGS="$FFLAGS -O3 -Ofast -Wl,-z,x86-64-v3 -falign-functions=32 -fno-lto -fno-semantic-interposition -march=x86-64-v3 -mprefer-vector-width=256 -msse2avx -mtune=skylake "
-export CXXFLAGS="$CXXFLAGS -O3 -Ofast -Wl,-z,x86-64-v3 -falign-functions=32 -fno-lto -fno-semantic-interposition -march=x86-64-v3 -mprefer-vector-width=256 -msse2avx -mtune=skylake "
+export CFLAGS="$CFLAGS -O3 -Ofast -Wl,-z,x86-64-v3 -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz -march=x86-64-v3 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -Wl,-z,x86-64-v3 -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz -march=x86-64-v3 "
+export FFLAGS="$FFLAGS -O3 -Ofast -Wl,-z,x86-64-v3 -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz -march=x86-64-v3 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -Wl,-z,x86-64-v3 -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz -march=x86-64-v3 "
 export CFLAGS="$CFLAGS -march=x86-64-v3 -m64 -Wl,-z,x86-64-v3"
 export CXXFLAGS="$CXXFLAGS -march=x86-64-v3 -m64 -Wl,-z,x86-64-v3"
 export FFLAGS="$FFLAGS -march=x86-64-v3 -m64 -Wl,-z,x86-64-v3"
@@ -198,18 +201,18 @@ make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1656100647
+export SOURCE_DATE_EPOCH=1672863876
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/darktable
-cp %{_builddir}/darktable-3.4.1/LICENSE %{buildroot}/usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02
-cp %{_builddir}/darktable-3.4.1/data/pswp/LICENSE %{buildroot}/usr/share/package-licenses/darktable/d9f41c058914394e203adb253057643e047576a3
-cp %{_builddir}/darktable-3.4.1/src/external/LuaAutoC/LICENSE.md %{buildroot}/usr/share/package-licenses/darktable/6baddc7988322d021a187ff7d1d0fb9e2a784e20
-cp %{_builddir}/darktable-3.4.1/src/external/OpenCL/LICENSE %{buildroot}/usr/share/package-licenses/darktable/7235f6784b4eae4c40a259dcecc7a20e6c487263
-cp %{_builddir}/darktable-3.4.1/src/external/libxcf/LICENSE %{buildroot}/usr/share/package-licenses/darktable/fc356b2c50a063b663cc14dde29bc0ab9e7bec51
-cp %{_builddir}/darktable-3.4.1/src/external/rawspeed/LICENSE %{buildroot}/usr/share/package-licenses/darktable/3704f4680301a60004b20f94e0b5b8c7ff1484a9
-cp %{_builddir}/darktable-3.4.1/src/external/whereami/LICENSE.MIT %{buildroot}/usr/share/package-licenses/darktable/c996ffd4c579d586b7d86e158af6042018c3c422
-cp %{_builddir}/darktable-3.4.1/src/external/whereami/LICENSE.WTFPLv2 %{buildroot}/usr/share/package-licenses/darktable/75e5bae837deb898dae4cb65c4890b1ab825c6b6
-cp %{_builddir}/rawspeed-3.3/LICENSE %{buildroot}/usr/share/package-licenses/darktable/3704f4680301a60004b20f94e0b5b8c7ff1484a9
+cp %{_builddir}/darktable-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/darktable/8624bcdae55baeef00cd11d5dfcfa60f68710a02 || :
+cp %{_builddir}/darktable-%{version}/data/pswp/LICENSE %{buildroot}/usr/share/package-licenses/darktable/d9f41c058914394e203adb253057643e047576a3 || :
+cp %{_builddir}/darktable-%{version}/src/external/LuaAutoC/LICENSE.md %{buildroot}/usr/share/package-licenses/darktable/6baddc7988322d021a187ff7d1d0fb9e2a784e20 || :
+cp %{_builddir}/darktable-%{version}/src/external/OpenCL/LICENSE %{buildroot}/usr/share/package-licenses/darktable/7235f6784b4eae4c40a259dcecc7a20e6c487263 || :
+cp %{_builddir}/darktable-%{version}/src/external/libxcf/LICENSE %{buildroot}/usr/share/package-licenses/darktable/fc356b2c50a063b663cc14dde29bc0ab9e7bec51 || :
+cp %{_builddir}/darktable-%{version}/src/external/rawspeed/LICENSE %{buildroot}/usr/share/package-licenses/darktable/3704f4680301a60004b20f94e0b5b8c7ff1484a9 || :
+cp %{_builddir}/darktable-%{version}/src/external/whereami/LICENSE.MIT %{buildroot}/usr/share/package-licenses/darktable/c996ffd4c579d586b7d86e158af6042018c3c422 || :
+cp %{_builddir}/darktable-%{version}/src/external/whereami/LICENSE.WTFPLv2 %{buildroot}/usr/share/package-licenses/darktable/75e5bae837deb898dae4cb65c4890b1ab825c6b6 || :
+cp %{_builddir}/rawspeed-3.3/LICENSE %{buildroot}/usr/share/package-licenses/darktable/3704f4680301a60004b20f94e0b5b8c7ff1484a9 || :
 pushd clr-build-avx2
 %make_install_v3  || :
 popd
