@@ -1,16 +1,19 @@
 # This file contains additional build requirements that did not get
 # picked up automatically. One name per line, no whitespace.
+SDL2-dev
 colord-dev
 curl-dev
 desktop-file-utils
 exiv2-dev
 expat-dev
+gettext-dev
 glib-dev
 gtk3-dev
 intltool
 json-glib-dev
 lcms2-dev
 lensfun-dev
+libffi-dev
 libgphoto2-dev
 libjpeg-turbo-dev
 libpng-dev
@@ -21,10 +24,15 @@ libxml2-dev
 libxslt-dev
 llvm
 llvm-dev
+lua-dev
+ncurses-data
 ocl-icd-dev
 opencl-headers-dev
+openjpeg-dev
+osm-gps-map-dev
 perl(XML::Parser)
 po4a
 pugixml-dev
 sqlite-autoconf-dev
 tiff-dev
+zstd-dev

@@ -2,6 +2,9 @@
 # but are undesirable. One entry per line, no whitespace.
 GMIC
 GraphicsMagick
+lcms
+libheif
+libjxl
 libopenjp2
 osmgpsmap-1.0
 unity
