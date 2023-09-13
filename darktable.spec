@@ -7,7 +7,7 @@
 #
 Name     : darktable
 Version  : 4.4.2
-Release  : 84
+Release  : 85
 URL      : https://github.com/darktable-org/darktable/releases/download/release-4.4.2/darktable-4.4.2.tar.xz
 Source0  : https://github.com/darktable-org/darktable/releases/download/release-4.4.2/darktable-4.4.2.tar.xz
 Source1  : https://github.com/darktable-org/rawspeed/archive/200bfa7408cedeac340eea86570fb633831acf7c/rawspeed-200bfa7408cedeac340eea86570fb633831acf7c.tar.gz
