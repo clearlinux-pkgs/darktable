@@ -36,3 +36,4 @@ pugixml-dev
 sqlite-autoconf-dev
 tiff-dev
 zstd-dev
+openjpeg-staticdev
